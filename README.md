@@ -34,5 +34,3 @@ Refer to Contributing.md
 tbd.
 
 Stay updated for more info!
-
-![Meet Billy the Otter!](https://freeclipartimage.com/article/top-96-otter-clip-art#&gid=1&pid=7)  
