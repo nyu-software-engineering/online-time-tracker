@@ -28,7 +28,7 @@ time we spend online. Maybe if we knew, we could make more conscious
 choices about how we spent our time.
 
 ### Contributing Information
-Refer to Contributing.md
+[Refer to Contributing.md](https://github.com/nyu-software-engineering/online-time-tracker/blob/master/CONTRIBUTING.md)
 
 ### Instructions on Building and Testing the Project
 tbd.
