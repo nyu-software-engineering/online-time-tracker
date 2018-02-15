@@ -35,7 +35,7 @@
 
 ### Use Cases
 
-!(Use Cases)[content/usecases]
+!(Use Cases)[content/usecases.png]
 
 ### Domain Modeling
-!(Domain Modeling)[content/domainmodeling]
+!(Domain Modeling)[content/domainmodeling.png]
