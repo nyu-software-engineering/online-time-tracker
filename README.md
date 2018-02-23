@@ -35,6 +35,7 @@ choices about how we spent our time.
 ### Instructions on Building and Testing the Project
 
 To Branch:
+
 0. git pull (if there are changes, it's a good idea to have them) 
 1. git branch -b newname 
 2. (do stuff and edit stuff)
