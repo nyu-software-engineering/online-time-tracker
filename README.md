@@ -9,7 +9,7 @@
 5. [Andrew Huang](https://github.com/anzhe7) :guardsman:
 
 ### Project Description
-Introducing, Otter, a new platform to help you track how much time
+Introducing Otter, a new platform to help you track how much time
 you spend online. Information is gathered using a Google Chrome
 extension, and then displayed on a beautiful and secure
 password-protected website. Know exactly how much time you spend on
