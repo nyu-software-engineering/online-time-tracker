@@ -1,4 +1,6 @@
 var express = require('express');
+var db = require('./db.js');
+var mongoose = require('mongoose');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -7,6 +9,9 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var addname = require('./routes/addname');
+
+
 
 var app = express();
 
@@ -22,25 +27,53 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+var Name = mongoose.model('Name');
+
 app.use('/', index);
 app.use('/users', users);
+app.use('/addname', addname);
+
+
+
+app.get('/addname', function(req, res) {
+    res.render('index', { title: 'Otter' });
+
+})
+app.post("/addname", (req, res) => {
+    
+    var myData = new Name({
+        first: req.body.firstName,
+        last: req.body.lastName,
+    })
+    myData.save()
+        .then(item => {
+            res.send("item saved to database");
+        })
+        .catch(err => {
+            res.status(400).send("unable to save to database");
+        });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
 });
+
+
+
 
 module.exports = app;
