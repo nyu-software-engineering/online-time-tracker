@@ -48,4 +48,3 @@ To Deploy Changes on Heroku:
 1. (in main directory) git subtree push --prefix myapp heroku master
 
 Stay updated for more info!
-test for jenkins
