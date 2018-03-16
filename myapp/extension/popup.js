@@ -8,6 +8,11 @@
  * @param {function(string)} callback called when the URL of the current tab
  *   is found.
  */
+
+let bg=chrome.extension.getBackgroundPage();
+
+console.log('foo')
+
 function getCurrentTabUrl(callback) {
   // Query filter to be passed to chrome.tabs.query - see
   // https://developer.chrome.com/extensions/tabs#method-query
