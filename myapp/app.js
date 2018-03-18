@@ -1,3 +1,4 @@
+//yo  yo 
 var express = require('express');
 var db = require('./db.js');
 var mongoose = require('mongoose');
@@ -41,7 +42,7 @@ app.get('/addname', function(req, res) {
 
 })
 app.post("/addname", (req, res) => {
-    
+
     var myData = new Name({
         first: req.body.firstName,
         last: req.body.lastName,
