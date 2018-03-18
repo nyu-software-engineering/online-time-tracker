@@ -41,6 +41,11 @@ const sessionOptions = {
 };
 app.use(session(sessionOptions));
 
+// global variables storage
+app.use(function (req, res, next) {
+    res.locals.user = req.user || null
+    next()
+});
 
 // setup express validator
 const expressValidator = require('express-validator');
@@ -67,22 +72,22 @@ var User = mongoose.model('User');
 
 
 // Set up passport
-app.use(passport.initialize())
-app.use(passport.session())
-
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/addname', addname);
+//app.use('/addname', addname);
 
 
-app.get('/addname', function(req, res) {
-    res.render('addname', {title: 'Otter'});
-});
+// app.get('/addname', function(req, res) {
+//     res.render('addname', {title: 'Otter'});
+// });
 
 
 const User1 = require('./db.js');
+
 
 app.post("/signup", (req, res) => {
 
@@ -129,7 +134,7 @@ app.post("/signup", (req, res) => {
             } else {
                 if (user.length !== 0) {
                     console.log('Sorry. Username already exists.')
-                    res.render('login', {usertaken: 'Sorry. Username already exists.'})
+                    res.render('addname', {usertaken: 'Sorry. Username already exists.'})
                 }
             }
         });
@@ -148,30 +153,50 @@ app.post("/signup", (req, res) => {
                 console.log(user)
             } else {
                 const success = 'Successfully registered.'
-                res.render('login', {success: success})
+                res.render('addname', {success: success})
             }
         });
 
     }
 
+});
 
 
+passport.use(new passportLocal(
+    function (username, password, done) {
+        User.findOne({username: username}, function (err, user) {
+            User1.getUserByUsername(username, function (err, user) {
+                if (err) {
+                    throw err
+                }
+                if (!user) {
+                    return done(null, false, {message: 'unknown user'})
+                }
 
-
-
-
-
-    var myData = new User({
-        first: req.body.first,
-        last: req.body.last,
-    })
-    myData.save()
-        .then(item => {
-            res.send("item saved to database");
+                User1.comparePassword(password, user.password, function (err, isMatch) {
+                    if (err) throw err
+                    if (isMatch) {
+                        return done(null, user)
+                    } else {
+                        return done(null, false, {message: 'invalid password'})
+                    }
+                })
+            })
         })
-        .catch(err => {
-            res.status(400).send("unable to save to database");
-        });
+    }));
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id)
+});
+
+passport.deserializeUser(function (id, done) {
+    User1.getUserByID(id, function (err, user) {
+        done(err, user)
+    })
+});
+
+app.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/addname'}), function (req, res) {
+    res.redirect('/');
 });
 
 // catch 404 and forward to error handler
