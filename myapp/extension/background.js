@@ -1,59 +1,36 @@
 //Arays that stores all the tracked domains
-let domains = [];
-
-
+let domains = {};
 let activeURL = null;
 let startTime = new Date();
 
-
+//Adds the delta time when active tab switches
 function updateTime(url) {
     if (!domains[url]) {
         domains[url] = 0;
     }
     let deltaTime = new Date() - startTime;
-    // console.log(url);
-    // console.log(domains[url]);
     domains[url] += deltaTime / 1000;
+    console.log(domains[url]);
 }
 
+//Changes the active tab and updates time of the previous active tab
 function switchCurrentTab(url) {
     if (activeURL != null) {
-        
+
         updateTime(activeURL);
     }
     activeURL = url;
     startTime = new Date();
 }
 
-
-//The indicator of setinterval(), used to stop the timer when the active tab is changed
-let current;
-// look up chrome.tabs documentation. Part of chrome extensions API
+//Triggers when the user goes to a different tab in the same window
 chrome.tabs.onActivated.addListener((tab) => {
-
-    //every tab has a unique id for each browser session. look up extension API
     let id = tab.tabId;
 
-    // If no existing domain we create a new one other wise update the time spent on current domain
     chrome.tabs.get(id, (tab) => {
-
-            URL = tab.url;
-            console.log(URL);
-            switchCurrentTab(URL);
-
-            // let domainsObj = {};
-            // domainsObj["arrayKey"] = domains;
-
-            // console.log(domainsObj);
-            var newArray = JSON.parse(JSON.stringify(domains));
-            console.log(domains);
-            chrome.storage.sync.set({"arrayKey": domains }
-                ,
-                function() {
-                    console.log('Settings saved');
-                });
-
+        URL = tab.url;
+        switchCurrentTab(URL);
+        //sends information to front end.
+        chrome.storage.local.set(domains, function() {});
     })
-
-
 })
