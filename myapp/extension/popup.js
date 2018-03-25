@@ -1,4 +1,22 @@
+var port = chrome.extension.connect({
+    name: "Sample Communication"
+});
+port.postMessage("Hi BackGround");
+port.onMessage.addListener(function(msg) {
+    console.log("message recieved" + msg);
+});
 document.addEventListener("DOMContentLoaded", function() {
+    var isRecording = document.querySelector("input[name=isRecording]");
+    isRecording.addEventListener('change', function() {
+        if (this.checked) {
+            port.postMessage("Record");
+        } else {
+            port.postMessage("Don't Record");
+        }
+    });
+
+
+
     //receieves data from back end
     chrome.storage.local.get(function(result) {
         var counter = 1;
