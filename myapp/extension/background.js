@@ -2,8 +2,6 @@
 let recording = false;
 
 
-console.log('bg loaded');
-var bgFnc = new backgroundFunctions
 
 
 //listens for change in checkmark on popup.html
@@ -33,7 +31,7 @@ chrome.tabs.onUpdated.addListener(
     function(tabId, changeInfo, tab) {
         let id = tab.tabId;
         URL = tab.url;
-        bgFnc.switchCurrentTab(URL)
+        switchCurrentTab(URL)
     }
 );
 
@@ -45,9 +43,9 @@ chrome.tabs.onActivated.addListener((tab) => {
 
     chrome.tabs.get(id, (tab) => {
         URL = tab.url;
-        bgFnc.switchCurrentTab(URL);
+        switchCurrentTab(URL);
         //sends information to front end.
-        chrome.storage.local.set(bgFnc.domains, function() {});
+        chrome.storage.local.set(domains, function() {});
     })
 })
 
@@ -56,11 +54,11 @@ chrome.tabs.onActivated.addListener((tab) => {
 chrome.windows.onFocusChanged.addListener(
     function(windowId) {
         if (windowId == chrome.windows.WINDOW_ID_NONE) {
-            bgFnc.stopTime(activeURL);
+            stopTime(activeURL);
         } else {
             chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
                 var url = tabs[0].url;
-                bgFnc.recordTime(url);
+                recordTime(url);
             });
         }
     }
