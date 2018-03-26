@@ -1,8 +1,8 @@
 //Arays that stores all the tracked domains
-let recording = false;
+import functions.js
 
-
-
+console.log('bg loaded');
+var bgFnc = new backgroundFunctions
 
 //listens for change in checkmark on popup.html
 // chrome.extension.onConnect.addListener(function(port) {
@@ -25,13 +25,12 @@ let recording = false;
 // if (recording) {
 
 
-
 //triggers when url is changed on current tab
 chrome.tabs.onUpdated.addListener(
     function(tabId, changeInfo, tab) {
         let id = tab.tabId;
         URL = tab.url;
-        switchCurrentTab(URL)
+        bgfnc.switchCurrentTab(URL)
     }
 );
 
@@ -43,7 +42,7 @@ chrome.tabs.onActivated.addListener((tab) => {
 
     chrome.tabs.get(id, (tab) => {
         URL = tab.url;
-        switchCurrentTab(URL);
+        bgfnc.switchCurrentTab(URL);
         //sends information to front end.
         chrome.storage.local.set(domains, function() {});
     })
@@ -54,11 +53,11 @@ chrome.tabs.onActivated.addListener((tab) => {
 chrome.windows.onFocusChanged.addListener(
     function(windowId) {
         if (windowId == chrome.windows.WINDOW_ID_NONE) {
-            stopTime(activeURL);
+            bgfnc.stopTime(activeURL);
         } else {
             chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
                 var url = tabs[0].url;
-                recordTime(url);
+                bgfnc.recordTime(url);
             });
         }
     }

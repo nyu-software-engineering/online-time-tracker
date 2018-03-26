@@ -1,7 +1,7 @@
 //Adds the delta time when active tab switches
 
 console.log("foo loaded");
-backgroundFunctions = {};
+
 
 let domains ;
 let activeURL;
@@ -99,6 +99,15 @@ backgroundFunctions.prototype.parseTime = function(milliseconds) {
 
 }
 
+console.log('helloWorld');
 
-module.exports = backgroundFunctions;
 
+
+
+module.exports = {
+
+    backgroundFunctions: backgroundFunctions;
+
+}
+
+export {backgroundFunctions};
