@@ -79,7 +79,7 @@ describe('switchCurrentTab', function() {
 describe('updateTime', function() {
     it('should set time to 0 if no domain found', function() {
         bgFnc.updateTime("https://stackoverflow.com");
-        expect(bgFnc.domains["https://stackoverflow.com"]).to.equal(0);
+        expect(bgFnc.domains["https://stackoverflow.com"]).to.be.lt(.002) ;
     })
     it('should set time to delta time if domain is found', function() {
         bgFnc.startTime = new Date() - 100;
