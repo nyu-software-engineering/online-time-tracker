@@ -53,3 +53,16 @@ describe('parseTime',function(){
 	})
 
 })
+
+const parseUrlTest1 = 'www.facebook.com';
+const parseUrlTest2 = 'notAUrl';
+describe('parseurl', function() {
+    it('should return facebook', function() {
+        assert.equal(bgFnc.parseurl(parseUrlTest1), 'facebook');
+    })
+
+    //negative testing - testing for failure
+    it('should return null', function() {
+        assert.equal(bgFnc.parseurl(parseUrlTest2), null);
+    })
+})
