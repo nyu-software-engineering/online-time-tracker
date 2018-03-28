@@ -106,8 +106,7 @@ console.log('helloWorld');
 
 module.exports = {
 
-    backgroundFunctions: backgroundFunctions;
+    backgroundFunctions: backgroundFunctions
 
 }
 
-export {backgroundFunctions};
