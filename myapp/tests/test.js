@@ -3,7 +3,7 @@ const expect = require('chai').expect;
 
 
 const helper = require('../extension/functions.js');
-bgFnc = new helper();
+bgFnc = new helper.backgroundFunctions();
 
 
 const testUrl = 'https://stackoverflow.com/questions/1979583/how-can-i-get-the-url-of-the-current-tab-from-a-google-chrome-extension?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa';
@@ -79,7 +79,7 @@ describe('switchCurrentTab', function() {
 describe('updateTime', function() {
     it('should set time to 0 if no domain found', function() {
         bgFnc.updateTime("https://stackoverflow.com");
-        expect(bgFnc.domains["https://stackoverflow.com"]).to.be.lt(.002) ;
+        expect(bgFnc.domains["https://stackoverflow.com"]).to.equal(0);
     })
     it('should set time to delta time if domain is found', function() {
         bgFnc.startTime = new Date() - 100;
