@@ -4,7 +4,8 @@
   "main": "db.js",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "nyc test"
   },
   "dependencies": {
     "bcrypt": "^1.0.3",
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "jsdom": "11.6.2",
-    "jsdom-global": "3.0.2"
+    "jsdom-global": "3.0.2",
+    "nyc": "^11.6.0"
   }
 }
