@@ -71,7 +71,7 @@ describe('getHostName',function(){
 	})
 
 });
-/*
+
 describe('parseTime',function(){
 
 
@@ -102,7 +102,7 @@ describe('parseTime',function(){
 	})
 
 })
-*/
+
 
 const testUrl4 = 'http://www.facebook.com';
 const testUrl5 = 'notAUrl';
