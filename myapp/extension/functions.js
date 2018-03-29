@@ -2,7 +2,8 @@
 
 console.log("foo loaded");
 
-class BackgroundFunctions{ 
+
+class backgroundFunctions{ 
 
     constructor(){  // setup a constructor to hold defaults
 
@@ -106,7 +107,18 @@ class BackgroundFunctions{
 
         return time;
 
+
     }
 
 }
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined'){
+
+    module.exports = backgroundFunctions;
+}
+   
+else{
+
+    window.backgroundFunctions = backgroundFunctions;
+}
+  
