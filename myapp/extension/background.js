@@ -1,9 +1,9 @@
 //Arays that stores all the tracked domains
-let recording = false;
 
 
 console.log('bg loaded');
-var bgFnc = new backgroundFunctions
+
+let bgfnc = new backgroundFunctions();
 
 
 //listens for change in checkmark on popup.html
@@ -27,42 +27,82 @@ var bgFnc = new backgroundFunctions
 // if (recording) {
 
 
-
 //triggers when url is changed on current tab
+
+let updatedTab;
+
 chrome.tabs.onUpdated.addListener(
-    function(tabId, changeInfo, tab) {
-        let id = tab.tabId;
-        URL = tab.url;
-        bgFnc.switchCurrentTab(URL)
+
+	(tabId,changeinfo,tab)=>{
+
+        
+        let URL = bgfnc.getHostName(tab.url);
+		if(URL!==bgfnc.activeURL){
+
+			window.clearInterval(updatedTab)
+		}
+		
+		bgfnc.switchCurrentTab(URL);
+		let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
+		console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+		bgfnc.currentTime=currentTime;
+		updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
+
     }
 );
 
 //Triggers when the user goes to a different tab in the same window
-chrome.tabs.onActivated.addListener((tab) => {
+// chrome.tabs.onActivated.addListener((tab) => {
 
 
-    let id = tab.tabId;
+//     let id = tab.tabId;
+//     console.log('hello');
+//     chrome.tabs.get(id, (tab) => {
+       	
+//        	let URL = bgfnc.getHostName(tab.url);
+//        	console.log(bgfnc.activeURL);
 
-    chrome.tabs.get(id, (tab) => {
-        URL = tab.url;
-        bgFnc.switchCurrentTab(URL);
-        //sends information to front end.
-        chrome.storage.local.set(bgFnc.domains, function() {});
-    })
-})
+//        	if(URL!==bgfnc.activeURL){
+
+//        		window.clearInterval(updatedTab);
+//        	}
+        
+//         bgfnc.switchCurrentTab(URL)
+//         console.log(bgfnc.activeURL);
+//         updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL);},3000)
+//         //sends information to front end.
+        
+//     })
+//  })
 
 
 //Triggers when the user goes to a different chrome window
-chrome.windows.onFocusChanged.addListener(
-    function(windowId) {
-        if (windowId == chrome.windows.WINDOW_ID_NONE) {
-            bgFnc.stopTime(activeURL);
-        } else {
-            chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
-                var url = tabs[0].url;
-                bgFnc.recordTime(url);
-            });
-        }
-    }
-);
-// }
+// chrome.windows.onFocusChanged.addListener(
+
+//     function(windowId) {
+    	
+//         if (windowId == chrome.windows.WINDOW_ID_NONE) {
+        	
+//         	bgfnc.stopTime(bgfnc.activeURL);
+    	
+//     	} 
+
+
+//         else {
+            
+//             chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
+//             let url = bgfnc.getHostName(tabs[0].url);
+// 		    chrome.tabs.get(id, (tab) => {
+// 	        URL = tab.url;
+// 	        bgfnc.switchCurrentTab(URL);
+// 	        //sends information to front end.
+// 	        chrome.storage.local.set(domains, function() {});
+
+// 		    })
+// 		})
+
+// 	}
+			
+// })
+
+
