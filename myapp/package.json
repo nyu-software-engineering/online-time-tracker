@@ -10,7 +10,6 @@
     "bcrypt": "^1.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
@@ -30,7 +29,7 @@
   "test-jenkins": "JUNIT_REPORT_PATH=/report.xml mocha --colors --reporter mocha-jenkins-reporter"
   },
   "devDependencies": {
-    //"chai": "^4.1.2",
+    "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "jsdom": "11.6.2",
     "jsdom-global": "3.0.2",
