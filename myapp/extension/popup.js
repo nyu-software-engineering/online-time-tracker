@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //receieves data from back end
     chrome.storage.local.get(function(result) {
+    	console.log(result);
         var counter = 1;
         var table = document.getElementById("timetable");
         //iterates through recieved data by property
