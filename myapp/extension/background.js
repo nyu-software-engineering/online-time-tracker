@@ -52,57 +52,70 @@ chrome.tabs.onUpdated.addListener(
 );
 
 //Triggers when the user goes to a different tab in the same window
-// chrome.tabs.onActivated.addListener((tab) => {
+chrome.tabs.onActivated.addListener((tab) => {
 
 
-//     let id = tab.tabId;
-//     console.log('hello');
-//     chrome.tabs.get(id, (tab) => {
+    let id = tab.tabId;
+    console.log('hello');
+    chrome.tabs.get(id, (tab) => {
        	
-//        	let URL = bgfnc.getHostName(tab.url);
-//        	console.log(bgfnc.activeURL);
+       	let URL = bgfnc.getHostName(tab.url);
+       	console.log(bgfnc.activeURL);
 
-//        	if(URL!==bgfnc.activeURL){
+       	if(URL!==bgfnc.activeURL){
 
-//        		window.clearInterval(updatedTab);
-//        	}
+			window.clearInterval(updatedTab)
+		}
+		
+		bgfnc.switchCurrentTab(URL);
+		let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
+		console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+		bgfnc.currentTime=currentTime;
+		updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
+        //sends information to front end.
         
-//         bgfnc.switchCurrentTab(URL)
-//         console.log(bgfnc.activeURL);
-//         updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL);},3000)
-//         //sends information to front end.
-        
-//     })
-//  })
+    })
+ })
 
 
 //Triggers when the user goes to a different chrome window
-// chrome.windows.onFocusChanged.addListener(
+chrome.windows.onFocusChanged.addListener(
 
-//     function(windowId) {
+    function(windowId) {
     	
-//         if (windowId == chrome.windows.WINDOW_ID_NONE) {
+    	console.log('window changed');
+        if (windowId == chrome.windows.WINDOW_ID_NONE) {
         	
-//         	bgfnc.stopTime(bgfnc.activeURL);
+        	console.log('window no longer focused');
+        	console.log(updatedTab);
+        	window.clearInterval(updatedTab);
     	
-//     	} 
+    	} 
 
 
-//         else {
+        // else {
             
-//             chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
-//             let url = bgfnc.getHostName(tabs[0].url);
-// 		    chrome.tabs.get(id, (tab) => {
-// 	        URL = tab.url;
-// 	        bgfnc.switchCurrentTab(URL);
-// 	        //sends information to front end.
-// 	        chrome.storage.local.set(domains, function() {});
+  //           chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
+  //           let url = bgfnc.getHostName(tabs[0].url);
+		//     chrome.tabs.get(id, (tab) => {
+	 //        let URL = bgfnc.getHostName(tab.url);
+	 //        console.log(bgfnc.activeURL);
 
-// 		    })
-// 		})
+	 //       	if(URL!==bgfnc.activeURL){
 
-// 	}
+		// 		window.clearInterval(updatedTab)
+		// 	}
+	 //        bgfnc.switchCurrentTab(URL);
+		// 	let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
+		// 	console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+		// 	bgfnc.currentTime=currentTime;
+		// 	updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
+
+		//     })
+		// })
+
+	// }
 			
-// })
+})
 
 
