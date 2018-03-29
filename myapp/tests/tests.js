@@ -43,7 +43,7 @@ describe("get all tests for homepage", function(){
 						});
 				});
 		});
-
+/*
 		// testing 404 route functionality by matthew tessler
 		describe("GET /nonExistentPage", function() {
 			it("returns status code 404", function() {
@@ -53,6 +53,7 @@ describe("get all tests for homepage", function(){
 				});
 			});
 		});
+*/
 });
 
 
