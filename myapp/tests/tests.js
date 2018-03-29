@@ -44,7 +44,17 @@ describe("get all tests for homepage", function(){
 				});
 		});
 
+		// testing 404 route functionality by matthew tessler
+		describe("GET /nonExistentPage", function() {
+			it("returns status code 404", function() {
+				request.get("http://localhost:3000/blahblah", function(error, response,body){
+					assert.equal(404, response.statusCode);
+					done();
+				});
+			});
+		});
 });
+
 
 describe('getHostName',function(){
 
