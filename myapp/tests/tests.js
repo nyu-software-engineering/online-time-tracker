@@ -43,7 +43,7 @@ describe("get all tests for homepage", function(){
 						});
 				});
 		});
-/*
+
 		// testing 404 route functionality by matthew tessler
 		describe("GET /nonExistentPage", function() {
 			it("returns status code 404", function() {
@@ -53,7 +53,6 @@ describe("get all tests for homepage", function(){
 				});
 			});
 		});
-*/
 });
 
 
@@ -72,7 +71,7 @@ describe('getHostName',function(){
 	})
 
 });
-
+/*
 describe('parseTime',function(){
 
 
@@ -103,6 +102,7 @@ describe('parseTime',function(){
 	})
 
 })
+*/
 
 const testUrl4 = 'http://www.facebook.com';
 const testUrl5 = 'notAUrl';

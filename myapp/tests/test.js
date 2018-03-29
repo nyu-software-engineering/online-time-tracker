@@ -29,6 +29,7 @@ describe('getHostName', function() {
 
 });
 
+/*
 describe('parseTime', function() {
 
 
@@ -59,7 +60,7 @@ describe('parseTime', function() {
     })
 
 })
-
+*/
 
 describe('switchCurrentTab', function() {
     it('should add new domain if domain not found', function() {
