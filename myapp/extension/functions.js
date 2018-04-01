@@ -53,7 +53,8 @@ class backgroundFunctions{
         console.log(`${url}s currentTime is ${this.currentTime}`);
         this.domains[url]['time'] = this.currentTime + deltaTime;
 
-     chrome.storage.local.set({url: this.domains[url] }, function() {});
+        //set domain and time to chrome storage local
+        chrome.storage.local.set(this.domains, function() {});
         console.log(this.activeURL,this.domains[url]['time']);
     
     }

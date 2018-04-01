@@ -73,9 +73,6 @@ chrome.tabs.onActivated.addListener((tab) => {
         if (bgfnc.activeURL != undefined) {
             updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
         }
-
-        //sends information to front end.
-
     })
 })
 

@@ -17,8 +17,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    //receieves data from back end
+    //receive data from chrome storage local
     chrome.storage.local.get(function(result) {
+        //upload result for inspection in console
     	console.log(result);
         var counter = 1;
         var table = document.getElementById("timetable");
@@ -30,7 +31,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 var cell2 = row.insertCell(1);
 
                 cell1.innerHTML = prop;
-                cell2.innerHTML = result[prop];
+
+                //display time 
+                cell2.innerHTML = result[prop].time;
                 counter++;
             }
         }
