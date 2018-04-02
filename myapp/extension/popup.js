@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if ( result.hasOwnProperty(prop) ) {
                 //barchartdata[index].y = result[prop].time;
                 //barchartdata[index].lable = prop;
-                chart.options.data[0].dataPoints.push({y: result[prop].time, lable: prop});
+                chart.options.data[0].dataPoints.push({y: result[prop].time, label: prop});
                 //chart.options.data[0].dataPoints.push({y:23});
                 index++;
             }
