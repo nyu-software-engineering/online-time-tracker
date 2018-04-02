@@ -37,5 +37,43 @@ document.addEventListener("DOMContentLoaded", function() {
                 counter++;
             }
         }
+
+        // setup bar chart
+        var chart = new CanvasJS.Chart("barchart", {
+            animationEnabled: true,
+    
+            axisX:{
+                interval: 1
+            },
+            axisY2:{
+                interlacedColor: "rgba(1,77,101,.2)",
+                gridColor: "rgba(1,77,101,.1)",
+                title: "Time Tracker"
+            },
+            data: [{
+                type: "bar",
+                name: "websites",
+                axisYType: "secondary",
+                color: "#014D65",
+                dataPoints: []
+            }]
+        });
+
+        // collect data for bar chart
+        //var barchartdata = [];
+        var index = 0;
+        for (var prop in result) {
+        
+            if ( result.hasOwnProperty(prop) ) {
+                //barchartdata[index].y = result[prop].time;
+                //barchartdata[index].lable = prop;
+                chart.options.data[0].dataPoints.push({y: result[prop].time, lable: prop});
+                //chart.options.data[0].dataPoints.push({y:23});
+                index++;
+            }
+        }
+
+        chart.render();
+
     });
 });

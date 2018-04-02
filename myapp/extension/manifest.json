@@ -11,6 +11,7 @@
         "scripts": ["functions.js","background.js"],
         "persistent": true
     },
+    "content_security_policy": "script-src 'self' https://canvasjs.com",
     "browser_action":
     {
         "default title": "Otter",
