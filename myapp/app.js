@@ -41,12 +41,6 @@ const sessionOptions = {
 };
 app.use(session(sessionOptions));
 
-// global variables storage
-app.use(function (req, res, next) {
-    res.locals.user = req.user || null
-    next()
-});
-
 // setup express validator
 const expressValidator = require('express-validator');
 app.use(expressValidator({
@@ -75,6 +69,11 @@ var User = mongoose.model('User');
 app.use(passport.initialize());
 app.use(passport.session());
 
+// global variables storage
+app.use(function (req, res, next) {
+    res.locals.user = req.user || null
+    next()
+});
 
 app.use('/', index);
 app.use('/users', users);
