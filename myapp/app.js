@@ -199,6 +199,13 @@ app.post('/login', passport.authenticate('local', {successRedirect: '/', failure
     res.redirect('/');
 });
 
+app.get('/logout', function (req, res) {
+  req.logout()
+  console.log('logged out. success')
+  res.redirect('/addname')
+})
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
