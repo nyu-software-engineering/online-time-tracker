@@ -1,3 +1,4 @@
+const app = require("../app.js");
 const assert=require('chai').assert;
 const expect=require('chai').expect;
 const extension=require('../extension/functions.js');
@@ -11,6 +12,9 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 bgfnc=new extension();
 chai.use(chaiHttp);
+
+const request = require("request")
+
 
 //homepage test by zk
 describe("get all tests for homepage", function(){
@@ -111,10 +115,9 @@ describe('parseUrl', function() {
     it('should return facebook.com', function() {
         assert.equal(bgfnc.parseUrl(testUrl4),'facebook.com');
     });
-    // negative testing - testing for failure 
+    // negative testing - testing for failure
     it('should return null', function() {
         assert.equal(bgfnc.parseUrl(testUrl5), null);
     })
 
 });
-
