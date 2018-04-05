@@ -78,7 +78,7 @@ chrome.tabs.onActivated.addListener((tab) => {
  })
 
 
-//Triggers when the user goes to a different chrome window
+Triggers when the user goes to a different chrome window
 chrome.windows.onFocusChanged.addListener(
 
     function(windowId) {
@@ -93,28 +93,28 @@ chrome.windows.onFocusChanged.addListener(
     	} 
 
 
-        // else {
+        else {
             
-  //           chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
-  //           let url = bgfnc.getHostName(tabs[0].url);
-		//     chrome.tabs.get(id, (tab) => {
-	 //        let URL = bgfnc.getHostName(tab.url);
-	 //        console.log(bgfnc.activeURL);
+            chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
+            let url = bgfnc.getHostName(tabs[0].url);
+		    chrome.tabs.get(id, (tab) => {
+	        let URL = bgfnc.getHostName(tab.url);
+	        console.log(bgfnc.activeURL);
 
-	 //       	if(URL!==bgfnc.activeURL){
+	       	if(URL!==bgfnc.activeURL){
 
-		// 		window.clearInterval(updatedTab)
-		// 	}
-	 //        bgfnc.switchCurrentTab(URL);
-		// 	let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
-		// 	console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
-		// 	bgfnc.currentTime=currentTime;
-		// 	updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
+				window.clearInterval(updatedTab)
+			}
+	        bgfnc.switchCurrentTab(URL);
+			let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
+			console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+			bgfnc.currentTime=currentTime;
+			updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
 
-		//     })
-		// })
+		    })
+		})
 
-	// }
+	}
 			
 })
 
