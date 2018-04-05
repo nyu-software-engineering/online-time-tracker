@@ -114,45 +114,40 @@ chrome.windows.onFocusChanged.addListener(
         }
     })
 
-// function login() {
-//     $.ajax({
 
-//         url: "popup.html", type: "GET", dataType: "html", success: function() {
-//             $.ajax({
-//                 url: "http://localhost/login", type: "POST", data: {
-//                     "email": "me@alberto-elias.com",
-//                     "password": "mypassword",
-//                 },
-//             dataType: "html",
-//             success: function(data) {
-//                //now you can parse your report screen
-//             }
-//             });
-//             console.log('asdasd');
-//         }
-//     }); 
-// }
+function login(username,password){
 
-// $.ajax({
-//     url: "https://background.html",
-//     type: "GET",
-//     dataType: "html",
-//     success: function() {
-//         $.ajax({
-//             url: "https://background.html",
-//             type: "POST",
-//             data: {
-//                     "username": "username",
-//                     "password": "password",
-//                     "extra_field": "value"
-//             },
-//             dataType: "html",
-//             success: function(data) {
-//                    //now you can parse your report screen
-//             }
-//         });
-//         console.log('hello world')
-//     }
+    $.ajax({
+        url: "popup.html",
+        type: "GET",
+        dataType: "html",
+        success: function() {
+            $.ajax({
+                url: "https://facebook.com",
+                type: "POST",
+                data: {
+                        "emal":"bhubon2000@yahoo.com" ,
+                        "pass": "mvemjsunp123",
+                        "extra_field": 'value'
+                },
+                dataType: "html",
+                success: function(data) {
+                    console.log(data);
+                       //now you can parse your report screen
+                }
+            });
+            
+        }
 
 
-// });
+});
+
+
+
+}
+
+ var xhr = new XMLHttpRequest();
+
+    xhr.open("POST", 'http://yahoo.com/', false);
+    xhr.send();
+    

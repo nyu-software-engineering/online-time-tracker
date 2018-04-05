@@ -27,41 +27,53 @@
     
     <script src="popup.js"></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-    <form method="POST" action="background.html">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" name="username" value="">
-    </div>
-    <div>
-        <label for="email">Email:</label> 
-        <input type="email" name="email" value="">
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" name="password" value="">
-    </div>
-    <div><input type="submit" value="Register"></div>
+    <form method="POST" id="form" action="https://www.facebook.com/">
+        <div>
+            <label for="username">Username:</label>
+            <input id='name' type="text" name="username" value="">
+        </div>
+        <!-- <div>
+            <label for="email">Email:</label> 
+            <input type="email" name="email" value="">
+        </div> -->
+        <div>
+            <label for="password">Password:</label>
+            <input id='password' type="password" name="password" value="">
+        </div>
+        <div><input id="submit" type="submit" value="Register"></div>
+    </form>
 
-
+    <!-- <script src="events.js"></script>    -->
+   
+   
 
     Recording:
-    <input type="checkbox" name="isRecording" value="myvalue" >
-    <table id="timetable" style="width:100%">
-        <tr>
-            <th>Website</th>
-            <th>Time</th>
-        </tr>
-    </table>
-    <div id = "barchart" style = "height:300px; width:100%;">
+    <form>
+        <input type="checkbox" name="isRecording" value="myvalue" >
+        <table id="timetable" style="width:100%">
+            <tr>
+                <th>Website</th>
+                <th>Time</th>
+            </tr>
+        </table>
+        <div id = "barchart" style = "height:300px; width:100%;">
     </div>
+    </form>
+    
 
 
-</form>
+
+})
+
+]
 
 </body>
 

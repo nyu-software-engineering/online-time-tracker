@@ -81,11 +81,12 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     
-    $(document).ready(function() {
-    $('#pageGaffe').val(bkg.getBgText()); 
-    console.log("attempting to login"); 
-    bkg.login();        
-    });
 
+    
+});
 
+ $(document).ready(function() {
+    let name=$('#name').val; 
+    let password=$('password').val;
+    bkg.login(name,password);        
 });
