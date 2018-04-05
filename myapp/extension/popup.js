@@ -17,8 +17,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-    //receieves data from back end
+    //receive data from chrome storage local
     chrome.storage.local.get(function(result) {
+        //upload result for inspection in console
+    	console.log(result);
         var counter = 1;
         var table = document.getElementById("timetable");
         //iterates through recieved data by property
@@ -29,9 +31,49 @@ document.addEventListener("DOMContentLoaded", function() {
                 var cell2 = row.insertCell(1);
 
                 cell1.innerHTML = prop;
-                cell2.innerHTML = result[prop];
+
+                //display time 
+                cell2.innerHTML = result[prop].time;
                 counter++;
             }
         }
+
+        // setup bar chart
+        var chart = new CanvasJS.Chart("barchart", {
+            animationEnabled: true,
+    
+            axisX:{
+                interval: 1
+            },
+            axisY2:{
+                interlacedColor: "rgba(1,77,101,.2)",
+                gridColor: "rgba(1,77,101,.1)",
+                title: "Time Tracker"
+            },
+            data: [{
+                type: "bar",
+                name: "websites",
+                axisYType: "secondary",
+                color: "#014D65",
+                dataPoints: []
+            }]
+        });
+
+        // collect data for bar chart
+        //var barchartdata = [];
+        var index = 0;
+        for (var prop in result) {
+        
+            if ( result.hasOwnProperty(prop) ) {
+                //barchartdata[index].y = result[prop].time;
+                //barchartdata[index].lable = prop;
+                chart.options.data[0].dataPoints.push({y: result[prop].time, lable: prop});
+                //chart.options.data[0].dataPoints.push({y:23});
+                index++;
+            }
+        }
+
+        chart.render();
+
     });
 });

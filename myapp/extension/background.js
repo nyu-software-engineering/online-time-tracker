@@ -33,20 +33,19 @@ let updatedTab;
 
 chrome.tabs.onUpdated.addListener(
 
-	(tabId,changeinfo,tab)=>{
+    (tabId, changeinfo, tab) => {
 
-        
+
         let URL = bgfnc.getHostName(tab.url);
-		if(URL!==bgfnc.activeURL){
+        if (URL !== bgfnc.activeURL) {
+            window.clearInterval(updatedTab)
+        }
 
-			window.clearInterval(updatedTab)
-		}
-		
-		bgfnc.switchCurrentTab(URL);
-		let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
-		console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
-		bgfnc.currentTime=currentTime;
-		updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
+        bgfnc.switchCurrentTab(URL);
+        let currentTime = bgfnc.getCurrentTime(bgfnc.activeURL);
+        console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+        bgfnc.currentTime = currentTime;
+        updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
 
     }
 );
@@ -58,64 +57,57 @@ chrome.tabs.onActivated.addListener((tab) => {
     let id = tab.tabId;
     console.log('hello');
     chrome.tabs.get(id, (tab) => {
-       	
-       	let URL = bgfnc.getHostName(tab.url);
-       	console.log(bgfnc.activeURL);
 
-       	if(URL!==bgfnc.activeURL){
+        let URL = bgfnc.getHostName(tab.url);
+        console.log(bgfnc.activeURL);
 
-			window.clearInterval(updatedTab)
-		}
-		
-		bgfnc.switchCurrentTab(URL);
-		let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
-		console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
-		bgfnc.currentTime=currentTime;
-		updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
-        //sends information to front end.
-        
+        if (URL !== bgfnc.activeURL) {
+
+            window.clearInterval(updatedTab)
+        }
+
+        bgfnc.switchCurrentTab(URL);
+        let currentTime = bgfnc.getCurrentTime(bgfnc.activeURL);
+        console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+        bgfnc.currentTime = currentTime;
+        if (bgfnc.activeURL != undefined) {
+            updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
+        }
     })
- })
+})
 
 
 Triggers when the user goes to a different chrome window
 chrome.windows.onFocusChanged.addListener(
 
     function(windowId) {
-    	
-    	console.log('window changed');
+        console.log('window changed');
         if (windowId == chrome.windows.WINDOW_ID_NONE) {
-        	
-        	console.log('window no longer focused');
-        	console.log(updatedTab);
-        	window.clearInterval(updatedTab);
-    	
-    	} 
+
+            //dont' record anything
+            console.log('window no longer focused');
+            console.log('here' + updatedTab);
+            bgfnc.activeURL = undefined;
+            window.clearInterval(updatedTab);
+
+        } else {
+            //record active tab on switched window
+            console.log("here");
+            chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
+                let URL = bgfnc.getHostName(tabs[0].url);
 
 
-        else {
-            
-            chrome.tabs.query({ 'active': true, 'currentWindow': true }, function(tabs) {
-            let url = bgfnc.getHostName(tabs[0].url);
-		    chrome.tabs.get(id, (tab) => {
-	        let URL = bgfnc.getHostName(tab.url);
-	        console.log(bgfnc.activeURL);
+                if (URL !== bgfnc.activeURL) {
+                    window.clearInterval(updatedTab)
+                }
 
-	       	if(URL!==bgfnc.activeURL){
+                bgfnc.switchCurrentTab(URL);
+                let currentTime = bgfnc.getCurrentTime(bgfnc.activeURL);
+                console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
+                bgfnc.currentTime = currentTime;
+                updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
+            });
 
-				window.clearInterval(updatedTab)
-			}
-	        bgfnc.switchCurrentTab(URL);
-			let currentTime=bgfnc.getCurrentTime(bgfnc.activeURL);
-			console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
-			bgfnc.currentTime=currentTime;
-			updatedTab=window.setInterval(function(){bgfnc.updateTime(bgfnc.activeURL,bgfnc.currentTime)},2000)
-
-		    })
-		})
-
-	}
-			
-})
-
+        }
+    })
 
