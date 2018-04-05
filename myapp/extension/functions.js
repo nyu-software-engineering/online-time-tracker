@@ -47,15 +47,19 @@ class backgroundFunctions{
 
     }
     updateTime(url){
-       
-        let deltaTime = new Date() - this.startTime;
-        deltaTime=deltaTime/1000
-        console.log(`${url}s currentTime is ${this.currentTime}`);
-        this.domains[url]['time'] = this.currentTime + deltaTime;
+    
+        if(url!==undefined){
 
-        //set domain and time to chrome storage local
-        chrome.storage.local.set(this.domains, function() {});
-        console.log(this.activeURL,this.domains[url]['time']);
+            let deltaTime = new Date() - this.startTime;
+            deltaTime=deltaTime/1000
+            console.log(`${url}s currentTime is ${this.currentTime}`);
+            this.domains[url]['time'] = this.currentTime + deltaTime;
+
+            //set domain and time to chrome storage local
+            chrome.storage.local.set(this.domains, function() {});
+            console.log(this.activeURL,this.domains[url]['time']);
+        }  
+           
     
     }
 
