@@ -37,7 +37,7 @@ chrome.tabs.onUpdated.addListener(
 
 
         let URL = bgfnc.getHostName(tab.url);
-        if (URL !== bgfnc.activeURL) {
+        if (URL !== bgfnc.activeURL ) {
             window.clearInterval(updatedTab)
         }
 
@@ -45,7 +45,10 @@ chrome.tabs.onUpdated.addListener(
         let currentTime = bgfnc.getCurrentTime(bgfnc.activeURL);
         console.log(`current time on url :${bgfnc.activeURL} is ${currentTime}`)
         bgfnc.currentTime = currentTime;
-        updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
+        if(bgfnc.activeURL!==undefined){
+        	updatedTab = window.setInterval(function() { bgfnc.updateTime(bgfnc.activeURL, bgfnc.currentTime) }, 2000)
+        }
+        
 
     }
 );
@@ -77,12 +80,13 @@ chrome.tabs.onActivated.addListener((tab) => {
 })
 
 
-//Triggers when the user goes to a different chrome window
+// Triggers when the user goes to a different chrome window
 chrome.windows.onFocusChanged.addListener(
 
     function(windowId) {
         console.log('window changed');
         if (windowId == chrome.windows.WINDOW_ID_NONE) {
+
             //dont' record anything
             console.log('window no longer focused');
             console.log('here' + updatedTab);
@@ -109,3 +113,46 @@ chrome.windows.onFocusChanged.addListener(
 
         }
     })
+
+// function login() {
+//     $.ajax({
+
+//         url: "popup.html", type: "GET", dataType: "html", success: function() {
+//             $.ajax({
+//                 url: "http://localhost/login", type: "POST", data: {
+//                     "email": "me@alberto-elias.com",
+//                     "password": "mypassword",
+//                 },
+//             dataType: "html",
+//             success: function(data) {
+//                //now you can parse your report screen
+//             }
+//             });
+//             console.log('asdasd');
+//         }
+//     }); 
+// }
+
+// $.ajax({
+//     url: "https://background.html",
+//     type: "GET",
+//     dataType: "html",
+//     success: function() {
+//         $.ajax({
+//             url: "https://background.html",
+//             type: "POST",
+//             data: {
+//                     "username": "username",
+//                     "password": "password",
+//                     "extra_field": "value"
+//             },
+//             dataType: "html",
+//             success: function(data) {
+//                    //now you can parse your report screen
+//             }
+//         });
+//         console.log('hello world')
+//     }
+
+
+// });

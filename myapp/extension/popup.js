@@ -5,6 +5,9 @@ port.postMessage("Hi BackGround");
 port.onMessage.addListener(function(msg) {
     console.log("message recieved" + msg);
 });
+
+var bkg = chrome.extension.getBackgroundPage();
+
 document.addEventListener("DOMContentLoaded", function() {
     var isRecording = document.querySelector("input[name=isRecording]");
     isRecording.addEventListener('change', function() {
@@ -76,4 +79,13 @@ document.addEventListener("DOMContentLoaded", function() {
         chart.render();
 
     });
+
+    
+    $(document).ready(function() {
+    $('#pageGaffe').val(bkg.getBgText()); 
+    console.log("attempting to login"); 
+    bkg.login();        
+    });
+
+
 });
