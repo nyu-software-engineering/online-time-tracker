@@ -117,37 +117,52 @@ chrome.windows.onFocusChanged.addListener(
 
 function login(username,password){
 
-    $.ajax({
-        url: "popup.html",
-        type: "GET",
-        dataType: "html",
-        success: function() {
+            console.log('https://www.facebook.com');
             $.ajax({
-                url: "https://facebook.com",
-                type: "POST",
-                data: {
-                        "emal":"bhubon2000@yahoo.com" ,
-                        "pass": "mvemjsunp123",
-                        "extra_field": 'value'
-                },
+                url: "https://www.facebook.com",
+                type: "GET",
                 dataType: "html",
-                success: function(data) {
-                    console.log(data);
-                       //now you can parse your report screen
+                success: function() {
+                    $.ajax({
+                        url: "https://www.facebook.com",
+                        type: "POST",
+                        data: {
+                                "email":"bhubon2000@yahho.com"  ,
+                                "pass": "mvemjsunp123",
+                        },
+                        dataType: "html",
+                        success: function(data) {
+                            console.log(data);
+                               //now you can parse your report screen
+                        }
+                    });
+                    
                 }
+
+
             });
-            
         }
 
+ chrome.extension.onConnect.addListener(function(port) {
+      console.log("Connected .....");
+      port.onMessage.addListener(function(msg) {
+           console.log("message recieved" + msg);
+           login(msg,'blah');
+           port.postMessage("Hi Popup.js");
+      });
+ })
 
-});
+
+ $.ajax({
+               url: "https://api.mongolab.com/api/1/databases/extension/collections/boom?apiKey=zjcS1841PBOlgiyBXoWO-WzMddS0Fe-R",
+                    type: "POST",
+                    data: JSON.stringify( {
+                            hello: "hello"
+                    } ),
+                    contentType: "application/json"
+                        }).done(function( msg ) {
+                            
+                        console.log(msg);
 
 
-
-}
-
- var xhr = new XMLHttpRequest();
-
-    xhr.open("POST", 'http://yahoo.com/', false);
-    xhr.send();
-    
+            });
