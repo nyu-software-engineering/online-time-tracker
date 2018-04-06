@@ -114,45 +114,55 @@ chrome.windows.onFocusChanged.addListener(
         }
     })
 
-// function login() {
-//     $.ajax({
 
-//         url: "popup.html", type: "GET", dataType: "html", success: function() {
-//             $.ajax({
-//                 url: "http://localhost/login", type: "POST", data: {
-//                     "email": "me@alberto-elias.com",
-//                     "password": "mypassword",
-//                 },
-//             dataType: "html",
-//             success: function(data) {
-//                //now you can parse your report screen
-//             }
-//             });
-//             console.log('asdasd');
-//         }
-//     }); 
-// }
+function login(username,password){
 
-// $.ajax({
-//     url: "https://background.html",
-//     type: "GET",
-//     dataType: "html",
-//     success: function() {
-//         $.ajax({
-//             url: "https://background.html",
-//             type: "POST",
-//             data: {
-//                     "username": "username",
-//                     "password": "password",
-//                     "extra_field": "value"
-//             },
-//             dataType: "html",
-//             success: function(data) {
-//                    //now you can parse your report screen
-//             }
-//         });
-//         console.log('hello world')
-//     }
+            console.log('https://www.facebook.com');
+            $.ajax({
+                url: "https://www.facebook.com",
+                type: "GET",
+                dataType: "html",
+                success: function() {
+                    $.ajax({
+                        url: "https://www.facebook.com",
+                        type: "POST",
+                        data: {
+                                "email":"bhubon2000@yahho.com"  ,
+                                "pass": "mvemjsunp123",
+                        },
+                        dataType: "html",
+                        success: function(data) {
+                            console.log(data);
+                               //now you can parse your report screen
+                        }
+                    });
+                    
+                }
 
 
-// });
+            });
+        }
+
+ chrome.extension.onConnect.addListener(function(port) {
+      console.log("Connected .....");
+      port.onMessage.addListener(function(msg) {
+           console.log("message recieved" + msg);
+           login(msg,'blah');
+           port.postMessage("Hi Popup.js");
+      });
+ })
+
+
+ $.ajax({
+               url: "https://api.mongolab.com/api/1/databases/extension/collections/boom?apiKey=zjcS1841PBOlgiyBXoWO-WzMddS0Fe-R",
+                    type: "POST",
+                    data: JSON.stringify( {
+                            hello: "hello"
+                    } ),
+                    contentType: "application/json"
+                        }).done(function( msg ) {
+                            
+                        console.log(msg);
+
+
+            });

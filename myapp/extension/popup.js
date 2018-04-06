@@ -1,12 +1,74 @@
-var port = chrome.extension.connect({
-    name: "Sample Communication"
-});
-port.postMessage("Hi BackGround");
-port.onMessage.addListener(function(msg) {
-    console.log("message recieved" + msg);
-});
+// var port = chrome.extension.connect({
+//     name: "Sample Communication"
+// });
+// port.postMessage("Hi BackGround");
+// port.onMessage.addListener(function(msg) {
+//     console.log("message recieved" + msg);
+// });
 
 var bkg = chrome.extension.getBackgroundPage();
+const port = chrome.extension.connect({
+      name: "Sample Communication"
+ });
+
+
+function loginDetails(loginDetails) {
+    document.getElementById('name').value = loginDetails.title;
+    document.getElementById('password').value = loginDetails.url;
+   
+}
+
+function addBookmark() {
+    // Cancel the form submit
+    event.preventDefault();
+
+    // The URL to POST our data to
+    var postUrl = 'http://post-test.local.com';
+
+    // Set up an asynchronous AJAX POST request
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', postUrl, true);
+
+    // Prepare the data to be POSTed by URLEncoding each field's contents
+    var title = document.getElementById('title');
+    var url = document.getElementById('url');
+    var summary = document.getElementById('summary');
+    var tags = document.getElementById('tags');
+
+    var params = 'title=' + encodeURIComponent(title.value) +
+                 '&url=' + encodeURIComponent(url.value) +
+                 '&summary=' + encodeURIComponent(summary.value) +
+                 '&tags=' + encodeURIComponent(tags.value);
+
+    // Replace any instances of the URLEncoded space char with +
+    params = params.replace(/%20/g, '+');
+
+    // Set correct header for form data
+    var formContentType = 'application/x-www-form-urlencoded';
+    xhr.setRequestHeader('Content-type', formContentType);
+
+    // Handle request state change events
+    xhr.onreadystatechange = function() {
+        // If the request completed
+        if (xhr.readyState == 4) {
+            statusDisplay.innerHTML = '';
+            if (xhr.status == 200) {
+                // If it was a success, close the popup after a short delay
+                statusDisplay.innerHTML = 'Saved!';
+                window.setTimeout(window.close, 1000);
+            } else {
+                // Show what went wrong
+                statusDisplay.innerHTML = 'Error saving: ' + xhr.statusText;
+            }
+        }
+    };
+
+    // Send the request and set status
+    xhr.send(params);
+    statusDisplay.innerHTML = 'Saving...';
+}
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
     var isRecording = document.querySelector("input[name=isRecording]");
@@ -78,14 +140,61 @@ document.addEventListener("DOMContentLoaded", function() {
 
         chart.render();
 
+        chrome.runtime.sendMessage({greeting: "GetURL"},
+        function (response) {
+            console.log('hello')
+        });
     });
 
+    });
+
+let name;
+let password;
+
+document.addEventListener('submit',function(event){
+
+	name=document.getElementById('name').value
+	password=document.getElementById('password').value
+	port.postMessage(name);
+	port.onMessage.addListener(function(msg) {
+	    console.log("message recieved" + msg);
+	});
+	
+	alert(password);
+	event.preventDefault();
+})
+
+// if(name!==undefined){
+
+// 	port.postMessage(name);
+//  	port.onMessage.addListener(function(msg) {
+//       console.log("message recieved" + msg);
+//  	});
+ 
+
+// }
+
+
+// .addEventListener('submit'function{
+
+// 	alert('form submitted');
+// })
+// window.addEventListener('load', function(evt) {
+
+// 	document.getElementById('form').addEventListener('submit'function{
+
+// 	alert('form submitted')
+// })
     
-    $(document).ready(function() {
-    $('#pageGaffe').val(bkg.getBgText()); 
-    console.log("attempting to login"); 
-    bkg.login();        
-    });
+// });
 
+//  $(document).ready(function() {
+//     let name=$('#name').val; 
+//     let password=$('password').val;
+//     bkg.login(name,password);        
+// });
 
-});
+// document.getElementById('form').addEventListener('submit'function{
+
+// 	alert('form submitted')
+// })
