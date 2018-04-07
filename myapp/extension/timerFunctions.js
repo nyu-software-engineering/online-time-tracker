@@ -5,23 +5,23 @@ let setDate;
 let pauseDate;
 let alarmDate;
 
-function setAlarm(tMillis)
+function setAlarm(timeMilli)
 {
-	interval = tMillis;
-	ringIn(tMillis + guiLagAdjustment);
+	interval = timeMilli;
+	ringIn(timeMilli);
 }
 
-function ringIn(tMillis)
+function ringIn(timeMilli)
 {
 	clearTimeout(timeout);
 	pauseDate = null;
 
-	let tSecs = parseInt(tMillis / 1000);
+	let tSecs = parseInt(timeMilli / 1000);
 	let tMins = parseInt(tSecs / 60);
 	let secs = tSecs % 60;
 	let tHrs = parseInt(tMins / 60);
 	let mins = tMins % 60;
-	let millis = tMillis % 1000;
+	let millis = timeMilli % 1000;
 
 	alarmDate = new Date();
 	// alarmDate.setTime(alarmDate.getTime() + millis);
@@ -39,11 +39,6 @@ function ringIn(tMillis)
 	}, 1000);
 }
 
-function pause()
-{
-    pauseDate = new Date();
-    clearTimeout(timeout);
-}
 
 function resume()
 {
@@ -51,9 +46,16 @@ function resume()
     ringIn(remainingAfterPause);
 }
 
+function pause()
+{
+    pauseDate = new Date();
+    clearTimeout(timeout);
+}
+
+
 function restart()
 {
-    ringIn(interval + guiLagAdjustment);
+    ringIn(interval);
 }
 
 function getTimeLeft()
@@ -72,7 +74,7 @@ function getTimeLeftPercent()
 
 function getTimeLeftString()
 {
-   let until = getTimeLeft();
+    let until = getTimeLeft();
 	let tSecs = parseInt(until / 1000);
 	let tMins = parseInt(tSecs / 60);
 	let secs = tSecs % 60;
@@ -83,8 +85,6 @@ function getTimeLeftString()
 	if(tHrs < 10) tHrs = "0" + tHrs;
 	return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
 }
-
-function didCreateNotification(notificationId) {}
 
 function ring()
 {
