@@ -3,6 +3,7 @@ let bkg = chrome.extension.getBackgroundPage();
 const port = chrome.extension.connect({
       name: "Sample Communication"
  });
+
 let name;
 let password;
 
