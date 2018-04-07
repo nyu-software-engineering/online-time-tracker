@@ -51,20 +51,27 @@ document.addEventListener('DOMContentLoaded',function(event){
 	        });
 
 	        // collect data for bar chart
-	        //var barchartdata = [];
 	        var index = 0;
-	        for (var prop in result) {
-	        
-	            if ( result.hasOwnProperty(prop) ) {
-	                //barchartdata[index].y = result[prop].time;
-	                //barchartdata[index].lable = prop;
-	                chart.options.data[0].dataPoints.push({y: result[prop].time, lable: prop});
-	                //chart.options.data[0].dataPoints.push({y:23});
-	                index++;
-	            }
-	        }
 
-	        chart.render();
+	         for (var prop in result) {
+                if ( result.hasOwnProperty(prop) ) {
+                    // add time and website to bar chart
+                    chart.options.data[0].dataPoints.push({y: result[prop].time, label: prop});
+                    index++;
+                }
+            }
+
+
+            // compare function for sort
+            function compareDataPointYDescend( dataPoint1, dataPoint2) {
+                return (dataPoint1.y-dataPoint2.y);
+            }   
+
+            // sort bar chart
+            chart.options.data[0].dataPoints.sort(compareDataPointYDescend);
+
+            // draw chart
+            chart.render();
 
 	        chrome.runtime.sendMessage({greeting: "GetURL"},
 	        function (response) {
