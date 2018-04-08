@@ -14,32 +14,50 @@ document.addEventListener('DOMContentLoaded',function(event){
 	    	console.log(result);
 	        var counter = 1;
 	        var table = document.getElementById("timetable");
+            var totalTime = 0;
 	        //iterates through recieved data by property
+
+            //loop through first time to find total time
+            for (var prop in result) {
+                if (result.hasOwnProperty(prop)) {
+
+                    //find total time to do calculations for percentage
+                    totalTime = totalTime + result[prop].time;
+                }
+            }
+
+            //loop through second time to display data
 	        for (var prop in result) {
-	            if (result.hasOwnProperty(prop)) {
+	            
+                if (result.hasOwnProperty(prop)) {
 	                var row = table.insertRow(counter);
 	                var cell1 = row.insertCell(0);
 	                var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
 
 	                cell1.innerHTML = prop;
 
-	                //display time 
-	                cell2.innerHTML = result[prop].time;
+	                //display time rounded to 2nd decimail
+	                cell2.innerHTML = result[prop].time.toFixed(2);
+
+                    //display percentage rounded to whole number
+                    cell3.innerHTML = Math.round(result[prop].time / totalTime * 100) + "%";
 	                counter++;
 	            }
 	        }
 
 	        // setup bar chart
-	        var chart = new CanvasJS.Chart("barchart", {
-	            animationEnabled: true,
-	    
-	            axisX:{
-	                interval: 1
-	            },
+	       var chart = new CanvasJS.Chart("barchart", {
+                animationEnabled: true,
+        
+                axisX:{
+                    interval: 1
+                },
+
 	            axisY2:{
 	                interlacedColor: "rgba(1,77,101,.2)",
 	                gridColor: "rgba(1,77,101,.1)",
-	                title: "Time Tracker"
+	                title: "Time Tracker : bar chart"
 	            },
 	            data: [{
 	                type: "bar",
@@ -72,6 +90,40 @@ document.addEventListener('DOMContentLoaded',function(event){
 
             // draw chart
             chart.render();
+
+            var piechart = new CanvasJS.Chart("piechart", {
+                animationEnabled: true,
+
+                title:{
+                    text: "Time Tracker : pie chart",
+                    fontSize: 10
+                },
+
+                data: [{
+                    type: "doughnut", 
+                    startAngle: 0,
+                    indexLabel: "{label} - #percent%",
+                    toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                    dataPoints:[]
+                }]
+            });
+
+            //collect data for pie chart
+            var index = 0;
+
+             for (var prop in result){ 
+                if (result.hasOwnProperty(prop)) {
+                    //add time and website to pie chart
+                    piechart.options.data[0].dataPoints.push({y: result[prop].time, label: prop});
+                    index++;
+                }
+            }
+
+            //sort pie chart 
+            piechart.options.data[0].dataPoints.sort(compareDataPointYDescend);
+
+            //draw pie chart 
+            piechart.render();
 
 	        chrome.runtime.sendMessage({greeting: "GetURL"},
 	        function (response) {
