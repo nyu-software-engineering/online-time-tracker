@@ -1,3 +1,10 @@
+
+// Followed the template method, has all the logic of the timer which will be abstracted in the UI
+
+/*Also implemented the parseTime function here which saved me from writing a lot of extracode over and over again,
+
+while also making code more readable*/
+
 let timeout;
 let interval;
 
@@ -7,96 +14,87 @@ let alarmDate;
 
 function setAlarm(timeMilli)
 {
+	timeMilli=parseInt(timeMilli,10);
 	interval = timeMilli;
-	ringIn(timeMilli);
+	timeBeforeRinging(timeMilli);
 }
 
-function ringIn(timeMilli)
-{
+function timeBeforeRinging(timeMilli){
 	clearTimeout(timeout);
 	pauseDate = null;
 
-	let tSecs = parseInt(timeMilli / 1000);
-	let tMins = parseInt(tSecs / 60);
-	let secs = tSecs % 60;
-	let tHrs = parseInt(tMins / 60);
-	let mins = tMins % 60;
-	let millis = timeMilli % 1000;
+// implement parseTime as a demonstration of the template method
+	let time=parseTime(timeMilli);
 
 	alarmDate = new Date();
 	// alarmDate.setTime(alarmDate.getTime() + millis);
-	alarmDate.setHours(alarmDate.getHours() + tHrs);
-	alarmDate.setMinutes(alarmDate.getMinutes() + mins);
-	alarmDate.setSeconds(alarmDate.getSeconds() + secs);
-	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + millis);
-
+	alarmDate.setHours(alarmDate.getHours() + time['hours']);
+	alarmDate.setMinutes(alarmDate.getMinutes() + time['minutes']);
+	alarmDate.setSeconds(alarmDate.getSeconds() + time['seconds']);
+	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + time['milliseconds']);
 	setDate = new Date();
-	timeout = setTimeout(ring, alarmDate.getTime() - setDate.getTime());
+	timeout = setTimeout(ring, alarmDate - setDate);
 
-	chrome.browserAction.setBadgeBackgroundColor({color:greenColor});
-	setInterval(function() {
-		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
-	}, 1000);
 }
 
 
-function resume()
-{
-    let remainingAfterPause = (alarmDate.getTime() - pauseDate.getTime());
-    ringIn(remainingAfterPause);
+function resume(){
+    
+    let remainingAfterPause = (alarmDate - pauseDate);
+    timeBeforeRinging(remainingAfterPause);
 }
 
-function pause()
-{
+function pause(){
+    
     pauseDate = new Date();
     clearTimeout(timeout);
 }
 
 
-function restart()
-{
-    ringIn(interval);
+function restart(){
+    
+    timeBeforeRinging(interval);
 }
 
 function getTimeLeft()
 {
-    if (pauseDate)
-        return (alarmDate.getTime() - pauseDate.getTime());
-
-    let now = new Date();
-    return (alarmDate.getTime() - now.getTime());
-}
-
-function getTimeLeftPercent()
-{
-    return parseInt(getTimeLeft() / interval * 100);
+    if (pauseDate){
+        return (alarmDate - pauseDate);
+    }
+    else{
+    	 
+    	let timeNow = new Date();
+    	return (alarmDate - now);
+    }
+   
 }
 
 function getTimeLeftString()
 {
-    let until = getTimeLeft();
-	let tSecs = parseInt(until / 1000);
-	let tMins = parseInt(tSecs / 60);
-	let secs = tSecs % 60;
-	let tHrs = parseInt(tMins / 60);
-	let mins = tMins % 60;
-	if(secs < 10) secs = "0" + secs;
-	if(mins < 10) mins = "0" + mins;
-	if(tHrs < 10) tHrs = "0" + tHrs;
-	return ((tHrs > 0 ? tHrs + ":" : "") + mins + ":" + secs);
+
+	//can apply parse time here;
+    let timeLeft = getTimeLeft();
+	time=parseTime(timeLeft);
+
+	let secs=time['seconds'];
+	let mins=time['minutes']
+	let hours=time['hours'] 
+
+	if( secs< 10){
+		secs = "0" + secs;
+	}
+	if(mins< 10) {
+		mins = "0" + mins
+	};
+	if(hours< 10){
+		hours = "0" + hours;
+	} 
+	return ((hours > 0 ? hours + ":" : "") + mins + ":" + secs);
 }
 
-function ring()
-{
-   let options = {
-      type: "basic",
-      title: "Timer",
-      message: "Time\'s up!",
-      iconUrl: "img/48.png",
-      priority: 2
-   }
-   chrome.notifications.create("", options, didCreateNotification);
-	turnOff();
+function ring(){
+   
+    alert('Hello! Are you sure u still wanna stay on the internet')
 }
 
 function turnOff()
@@ -106,10 +104,9 @@ function turnOff()
 	alarmDate = null;
    	pauseDate = null;
    	setDate = null;
-	chrome.browserAction.setBadgeText({text: ""});
 }
 
 function error()
 {
-	alert("Please enter a number between 1 and 240.");
+	alert("wrong Input. Give a reasonable time");
 }
