@@ -99,7 +99,7 @@ class backgroundFunctions{
         let time = {};
         let rawSeconds = milliseconds / 1000;
 
-        let milliseconds=milliseconds-(milliseconds%1000)*1000;
+        milliseconds=milliseconds%1000
 
         let hours = Math.floor(rawSeconds / 3600);
 
