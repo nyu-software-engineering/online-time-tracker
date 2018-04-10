@@ -8,7 +8,7 @@
     "background":
     {
 
-        "scripts": ["jquery.js","functions.js","background.js"],
+        "scripts": ["jquery.js", "functions.js", "timerFunctions.js", "database.js", "background.js"],
         "persistent": true
     },
     "content_security_policy": "script-src 'self' https://canvasjs.com",
@@ -28,5 +28,5 @@
         "http://*/*",
         "https://*/*"
     ]
-    
+
 }
