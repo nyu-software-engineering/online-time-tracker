@@ -1,4 +1,5 @@
 let bgpage = chrome.extension.getBackgroundPage();
+console.log(bgpage.x);
 
 function show(section){
     document.getElementById(section).style.display = "block";
@@ -12,44 +13,66 @@ function hide(section)
 
 function disable(button){
 
-		 document.getElementById(button).disable = true;
+		 document.getElementById(button).disabled = true;
 }
 
 function enable(button){
 
-		 document.getElementById(button).disable = false;
+		 document.getElementById(button).disabled = false;
 }
 
-function load()
-{	
+function load(){	
 	console.log('hi from load');
 
     // if timer is paused, show resume button and hide pause button
-    if(bgpage.pauseDate)
-    {
-        enable('resume');
-        disable("pause");
-        show('options');
-        hide('setTimer');
-    }
+
+    chrome.storage.sync.get(['pauseDate'],function(result){
+
+    	bgpage.pauseDate=result.pauseDate;
+
+    	console.log(bgpage.pauseDate);
+    })
+    	if(bgpage.pauseDate){
+        	enable('resume');
+        	disable("pause");
+        	show('options');
+        	hide('setTimer');
+        	show('display');
+    	}
+    	else{
+
+    		enable("pause");
+
+    	}
+    
+  
    
-   console.log(bgpage.alarmDate);
     
    // if timer is off, show settings
-	if(!bgpage.alarmDate)
-	{	console.log('error');
-		show("setTimer");
-      	hide("display");
-	}
-	else
-	{		
-		show("options");
-		hide('setTimer');
-		show("display");
-		console.log('hi');
-        refreshDisplay();
-		
-	}
+   chrome.storage.sync.get(['alarmDate'],function(result){
+
+   		bgpage.alarmDate=result.alarmDate;
+   		console.log(bgpage.alarmDate);
+   	 })
+
+   		if(!bgpage.alarmDate){	
+   			
+			show("setTimer");
+      		hide("display");
+      		disable('pause')
+			disable('cancel');
+			disable('restart');
+			disable('resume');
+		}
+		else{		
+				
+			show("options");
+			hide('setTimer');
+			show("display");
+			enable('pause');
+	        refreshDisplay();
+				
+		}
 }
 
 
@@ -68,8 +91,10 @@ function setTimer(event)
 	{
 		bgpage.setAlarm(time * 60000);
 		hide("setTimer");
-		show("options");
-      	show("display");
+		show('display');
+		disable("resume");
+      	enable("pause");
+      	show('options');
 		refreshDisplay();
 	}
 	else

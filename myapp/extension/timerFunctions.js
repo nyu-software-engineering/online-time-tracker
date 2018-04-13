@@ -11,7 +11,7 @@ let interval;
 let setDate;
 let pauseDate;
 let alarmDate;
-
+let x=3;
 console.log('hi from timerfunctions');
 let helper=new backgroundFunctions();
 
@@ -31,8 +31,11 @@ function timeLeft(timeMilli){
 
 // implement helper.parseTime as a demonstration of the template method
 	let time=helper.parseTime(timeMilli);
-	console.log(alarmDate)
 	alarmDate = new Date();
+	chrome.storage.sync.set({alarmDate: alarmDate}, function(){
+
+		console.log("the time is:",alarmDate)
+	})
 	// alarmDate.setTime(alarmDate.getTime() + millis);
 	alarmDate.setHours(alarmDate.getHours() + time['hours']);
 	alarmDate.setMinutes(alarmDate.getMinutes() + time['minutes']);
@@ -43,7 +46,9 @@ function timeLeft(timeMilli){
 	setInterval(function() {
 		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
 	}, 1000);
-	console.log(alarmDate)
+	console.log(alarmDate);
+
+	
 }
 
 
@@ -56,7 +61,15 @@ function resume(){
 function pause(){
     
     pauseDate = new Date();
-    clearTimeout(timeout);
+    chrome.storage.sync.set({pauseDate: pauseDate}, function(){
+
+    	console.log('saved', pauseDate);
+		
+	})
+
+	console.log(pauseDate);
+	clearTimeout(timeout);
+    
 }
 
 
@@ -114,6 +127,10 @@ function turnOff()
 	alarmDate = null;
    	pauseDate = null;
    	setDate = null;
+   	chrome.storage.sync.remove(['alarmDate','pauseDate'],function(){
+
+   		console.log('deleted');
+   	})
    	chrome.browserAction.setBadgeText({text: ""});
 }
 
