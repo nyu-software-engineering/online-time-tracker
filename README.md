@@ -4,9 +4,8 @@
 ### Team/Contributors
 1. [Zachary Kimelheim](https://github.com/zackkimelheim)  :bowtie:
 2. [Imtiaz Haque](https://github.com/ih646) :princess:
-3. [Matthew Tessler](https://github.com/matthewtessler) :neckbeard:
-4. [Alex Bae](https://github.com/ajsbae) :construction_worker:
-5. [Andrew Huang](https://github.com/anzhe7) :guardsman:
+3. [Alex Bae](https://github.com/ajsbae) :construction_worker:
+4. [Andrew Huang](https://github.com/anzhe7) :guardsman:
 
 ### Project Description
 Introducing Otter, a new platform to help you track how much time

@@ -4,7 +4,61 @@ const port = chrome.extension.connect({
 });
 
 
+(function() {
+    var config = {
+        apiKey: "AIzaSyCJdWu2tUCqwnemXS4a5PFdv3tc_EmHDHo",
+        authDomain: "ott-se.firebaseapp.com",
+        databaseURL: "https://ott-se.firebaseio.com",
+        projectId: "ott-se",
+        storageBucket: "ott-se.appspot.com",
+        messagingSenderId: "862203884090"
+    };
+    firebase.initializeApp(config);
+    const txtEmail = document.getElementById('txtEmail');
+    const txtPassword = document.getElementById('txtPassword');
+    const btnLogin = document.getElementById('btnLogin');
+    const btnSignup = document.getElementById('btnSignup');
+    const btnLogout = document.getElementById('btnLogout');
 
+    btnLogin.addEventListener('click', e => {
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth();
+        const promise = auth.signInWithEmailAndPassword(email, pass).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            if (errorCode === 'auth/wrong-password') {
+                alert('Wrong password.');
+            } else {
+                alert(errorMessage);
+            }
+            console.log(error);
+        });
+        promise.catch(e => console.log(e.message));
+    })
+
+    btnSignup.addEventListener('click', e => {
+        const email = txtEmail.value;
+        const pass = txtPassword.value;
+        const auth = firebase.auth();
+        const promise = auth.createUserWithEmailAndPassword(email, pass);
+        promise.catch(e => console.log(e.message));
+    })
+
+    btnLogout.addEventListener('click', e => {
+        firebase.auth().signOut();
+    })
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if (firebaseUser) {
+            console.log(firebaseUser);
+
+        } else {
+            console.log('not logged in');
+        }
+    })
+}());
 
 let name;
 let password;
@@ -227,39 +281,16 @@ class DrawChart {
     }
 };
 
-
-let drawChart = new DrawChart();
-
-document.addEventListener('DOMContentLoaded', function(event) {
-
-    // function getRecordingValue() {
-    //     let isRecording;
-    //     chrome.storage.local.get('isRecording', function(result) {
-    //         isRecording = result.isRecording;
-    //         console.log(isRecording);
-    //         return isRecording;
-    //     });
-
-
-    // }
-    // let recording = getRecordingValue();
-    recording = true;
-    // if (recording) {
-    //     $("#Recording").prop("checked", true);
-    // } else {
-    //     $("#Recording").prop("checked", false);
-    // }
-
+function populatePopup() {
 
     chrome.storage.local.get(function(result) {
-
         if (result.isRecording == undefined) {
             chrome.storage.local.set({ isRecording: true }, function() {});
 
         }
         if (result.isRecording) {
             $('#Recording').prop('checked', true);
-            console.log(result);
+            
             //upload result for inspection in console
 
             var counter = 1;
@@ -299,28 +330,19 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
 
             drawChart.draw();
-
-
-            // chrome.runtime.sendMessage({ greeting: "GetURL" },
-            //     function(response) {
-            //         console.log('hello')
-            //     });
         } else {
             $('#Recording').prop('checked', false);
         }
     });
+}
+let drawChart = new DrawChart();
+
+document.addEventListener('DOMContentLoaded', function(event) {
+
+    populatePopup();
 
 
-    document.getElementById('form').addEventListener('submit', function(event) {
-        name = document.getElementById('name').value
-        password = document.getElementById('password').value
-        port.postMessage(name);
-        port.onMessage.addListener(function(msg) {
-            console.log("message recieved" + msg);
-        });
 
-        alert(password);
-    })
 
     document.getElementById('charts').addEventListener('click', function() {
 
@@ -329,17 +351,33 @@ document.addEventListener('DOMContentLoaded', function(event) {
     })
 
 
-
-
     $("#Recording").change(
         function() {
             if ($(this).prop('checked') == true) {
                 chrome.storage.local.set({ isRecording: true }, function() {})
+                $("#timetable").show();
+                $("#chart").show();
+                populatePopup();
 
             } else {
-                console.log("here");
-                chrome.storage.local.clear();
-                chrome.storage.local.set({ isRecording: false }, function() {})
+                chrome.storage.local.get(function(result) {
+                    console.log(result.domains);
+                    sendToDB(result.domains);
+
+                });
+                //the clear function is not working for some reason. 
+                // I want to delete the current data whenever the recording button is unpress
+                chrome.storage.local.clear(function() {
+                    var error = chrome.runtime.lastError;
+                    if (error) {
+                        console.error(error);
+                    }
+                });
+
+                chrome.storage.local.set({ isRecording: false }, function() {});
+                $("#timetable").hide();
+                $("#chart").hide();
+
 
             }
         });

@@ -4,12 +4,13 @@
 
 
 
-function sendToDB() {
+function sendToDB(data) {
+	console.log(data);
     $.ajax({
-        url: "https://api.mongolab.com/api/1/databases/ott/collections/test?apiKey=a3XnPmZZP2CoKuMezXAndN2pj4WoW3m5",
+        url: "https://api.mongolab.com/api/1/databases/ott/collections/timeData?apiKey=a3XnPmZZP2CoKuMezXAndN2pj4WoW3m5",
         type: "POST",
         data: JSON.stringify({
-            helslo: "hello"
+            timeData: data
         }),
         contentType: "application/json"
     }).done(function(msg) {
