@@ -1,22 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<script type='text/javascript' src="timer.js"></script>
+
+<style>
+body {min-width: 240px;}
+#display, #settings {margin-top: 4px;}
+#modify {margin-bottom: 4px;}
+</style>
+    
+</head>
+
+
 <body>
-	<form method="POST" id="form">
-        <div>
-            <label for="username">Username:</label>
-            <input id='name' type="text" name="username" value="">
-        </div>
-        <!-- <div>
-            <label for="email">Email:</label> 
-            <input type="email" name="email" value="">
-        </div> -->
-        <div>
-            <label for="password">Password:</label>
-            <input id='password' type="password" name="password" value="">
-        </div>
-        <div><input id="submit" type="submit" value="Register"></div>
-    </form>
 
+    <h3>
+        How long do you wish to stay online?
 
+    </h3>
+    
+    <div id="options">
+        <span>
+            <button id="cancel"> cancel</button>
+            <button id="resume">resume</button>
+            <button id="pause">pause</button>
+            <button id="restart">restart</button>
+        </span>
+    </div>
+    
+    <div id="setTimer">
 
+        <form>
+            Set Time (min):<input id="Time" type='number'><br>
+            <input type="submit" id="start" value="start">
+        </form>
+    </div>
+    <div id="display">
+        <span>
+            <p> Time left:<p>
+            <p id="timeLeft"></p>
+        </span>
+    </div>
 </body>
-
-
+</html>

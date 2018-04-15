@@ -1,7 +1,7 @@
 
 // Followed the template method, has all the logic of the timer which will be abstracted in the UI
 
-/*Also implemented the parseTime function here which saved me from writing a lot of extracode over and over again,
+/*Also implemented the helper.parseTime function here which saved me from writing a lot of extracode over and over again,
 
 while also making code more readable*/
 
@@ -11,22 +11,31 @@ let interval;
 let setDate;
 let pauseDate;
 let alarmDate;
+let x=3;
+console.log('hi from timerfunctions');
+let helper=new backgroundFunctions();
+
+
+console.log('timer functions');
 
 function setAlarm(timeMilli)
 {
 	timeMilli=parseInt(timeMilli,10);
 	interval = timeMilli;
-	timeBeforeRinging(timeMilli);
+	timeLeft(timeMilli);
 }
 
-function timeBeforeRinging(timeMilli){
+function timeLeft(timeMilli){
 	clearTimeout(timeout);
 	pauseDate = null;
 
-// implement parseTime as a demonstration of the template method
-	let time=parseTime(timeMilli);
-
+// implement helper.parseTime as a demonstration of the template method
+	let time=helper.parseTime(timeMilli);
 	alarmDate = new Date();
+	chrome.storage.sync.set({alarmDate: alarmDate}, function(){
+
+		console.log("the time is:",alarmDate)
+	})
 	// alarmDate.setTime(alarmDate.getTime() + millis);
 	alarmDate.setHours(alarmDate.getHours() + time['hours']);
 	alarmDate.setMinutes(alarmDate.getMinutes() + time['minutes']);
@@ -34,26 +43,39 @@ function timeBeforeRinging(timeMilli){
 	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + time['milliseconds']);
 	setDate = new Date();
 	timeout = setTimeout(ring, alarmDate - setDate);
+	setInterval(function() {
+		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
+	}, 1000);
+	console.log(alarmDate);
 
+	
 }
 
 
 function resume(){
     
     let remainingAfterPause = (alarmDate - pauseDate);
-    timeBeforeRinging(remainingAfterPause);
+    timeLeft(remainingAfterPause);
 }
 
 function pause(){
     
     pauseDate = new Date();
-    clearTimeout(timeout);
+    chrome.storage.sync.set({pauseDate: pauseDate}, function(){
+
+    	console.log('saved', pauseDate);
+		
+	})
+
+	console.log(pauseDate);
+	clearTimeout(timeout);
+    
 }
 
 
 function restart(){
     
-    timeBeforeRinging(interval);
+    timeLeft(interval);
 }
 
 function getTimeLeft()
@@ -64,17 +86,17 @@ function getTimeLeft()
     else{
     	 
     	let timeNow = new Date();
-    	return (alarmDate - now);
+    	return (alarmDate - timeNow);
     }
    
 }
 
 function getTimeLeftString()
 {
-
+	console.log(alarmDate)
 	//can apply parse time here;
     let timeLeft = getTimeLeft();
-	time=parseTime(timeLeft);
+	let time=helper.parseTime(timeLeft);
 
 	let secs=time['seconds'];
 	let mins=time['minutes']
@@ -95,15 +117,21 @@ function getTimeLeftString()
 function ring(){
    
     alert('Hello! Are you sure u still wanna stay on the internet')
+    turnOff();
 }
 
 function turnOff()
 {
 	clearTimeout(timeout);
-	interval = 0;
+	interval = null;
 	alarmDate = null;
    	pauseDate = null;
    	setDate = null;
+   	chrome.storage.sync.remove(['alarmDate','pauseDate'],function(){
+
+   		console.log('deleted');
+   	})
+   	chrome.browserAction.setBadgeText({text: ""});
 }
 
 function error()

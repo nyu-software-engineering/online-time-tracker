@@ -8,7 +8,7 @@
     "background":
     {
 
-        "scripts": ["jquery.js", "functions.js", "timerFunctions.js", "database.js", "background.js"],
+        "scripts": ["jquery.js", "functions.js", "database.js", "background.js", "timerFunctions.js"],
         "persistent": true
     },
     "content_security_policy": "script-src 'self' https://canvasjs.com",
@@ -16,7 +16,7 @@
     {
         "default title": "Otter",
         "default_icon": "icon.png",
-        "default_popup": "popup.html"
+        "default_popup": "timer.html"
     },
     "optional_permissions": ["<all_urls>"],
     "permissions": [
