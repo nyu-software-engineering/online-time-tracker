@@ -3,7 +3,7 @@
 
 console.log('bg loaded');
 
-sendToDB();
+// sendToDB();
 
 
 let bgfnc = new backgroundFunctions();

@@ -1,8 +1,3 @@
-// Followed the template method, has all the logic that sends data to the database
-
-
-
-
 
 function sendToDB(data) {
 	console.log(data);

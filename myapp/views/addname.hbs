@@ -1,141 +1,145 @@
-<hr>
-    <div class="row" style="padding-top: 50px; padding-left:350px; padding-bottom:200px">
+<nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="#" class="brand-logo"><img src="images/o.png"></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Download</a></li>
+      </ul>
 
-      <div class="col s12" style="padding-right: 50px">
-        <h1 style="font-family:avenir; margin-left:100px">Welcome to Otter!</h1>
+      <ul id="nav-mobile" class="sidenav">
+        <li><a href="#">Navbar Link</a></li>
+      </ul>
+      <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    </div>
+</nav>
+
+<div id="index-banner" class="parallax-container">
+  <div class="section no-pad-bot">
+    <div class="container">
+      <br><br>
+      <h1 class="header center white-text text-lighten-2">Welcome to Otter</h1>
+      <div class="row center">
+        <h5 class="header col s12 light">A modern, simple Google Chrome Extension to track your time spent online</h5>
       </div>
-
+      <div class="row center">
+        <a href="#" id="download-button" class="btn-large waves-effect waves-light black lighten-1">See Extension</a>
+      </div>
+      <br><br>
 
     </div>
-
-<hr>
-    <div class="row" style="padding-top: 50px; padding-left:350px">
-
-      <div class="col s3" style="padding-right: 50px">
-        <!-- Promo Content 1 goes here -->
-
-        <img src="clock.png" style="width: 100px; margin-left:50px">
-        <br>
-        <p>Otter is a brand new platform to help you track how much time you spend online. </p>
-      </div>
-      <div class="col s3" style="padding-right: 50px">
-        <!-- Promo Content 2 goes here -->
-
-        <img src="computer.png" style="width: 100px; margin-left:50px">
-        <br>
-        <p>Information is gathered using a Google Chrome extension, and then displayed on a beautiful and secure password-protected website.</p>
-      </div>
-      <div class="col s3" style="padding-right: 50px">
-        <!-- Promo Content 3 goes here -->
-
-        <img src="check.png" style="width: 100px; margin-left:50px">
-        <p style="padding-top:27px">Know exactly how much time you spend on your desktop on the Internet. Use this information however you like, it’s yours to keep!</p>
-      </div>
-
-    </div>
-    <hr>
-
-
-        <div class="row" style="padding-top: 50px; padding-left:350px; padding-bottom:200px">
-
-          <div class="col s12" style="padding-right: 50px">
-            <h1 style="font-family:avenir; margin-left:0px">Why do you need Otter?</h1>
-          </div>
-
-        </div>
-
-        <hr>
-            <div class="row" style="padding-top: 50px; padding-left:100px">
-
-              <div class="col s3" style="padding-right: 50px">
-                <!-- Promo Content 1 goes here -->
-
-                <img src="cloud.png" style="width: 100px; margin-left:50px">
-                <br>
-                <p>Internet companies often maintain a detailed understanding of our minds. </p>
-              </div>
-              <div class="col s3" style="padding-right: 50px">
-                <!-- Promo Content 2 goes here -->
-
-                <img src="smart.png" style="width: 100px; margin-left:50px">
-                <br>
-                <p>Facebook knows what interests us and with whom we interact. Amazon knows what we buy. YouTube and Netflix know what we watch.</p>
-              </div>
-              <div class="col s3" style="padding-right: 50px">
-                <!-- Promo Content 3 goes here -->
-
-                <img src="marketing.png" style="width: 100px; margin-left:50px">
-                <p style="padding-top:27px">With this information, Internet companies can choose which information we see in order to entice us to use their platform more and more.</p>
-              </div>
-
-              <div class="col s3" style="padding-right: 50px">
-                <!-- Promo Content 2 goes here -->
-
-                <img src="data.png" style="width: 100px; margin-left:50px">
-                <br>
-                <p>If we had personal metrics on our online footprints, we would be more conscious on our actions and what we are doing online.
-                </p>
-              </div>
-
-            </div>
-
-<hr>
-
-
-<div class="row" style="padding-left:35%">
-    <!--login-profile-->
-
-    <!--signin-form-->
-    <div class="container col s3">
-        <div class="signin-form profile">
-            <h4>Login</h4>
-            <div style="padding-bottom: 30px">
-                <form action="/login" method="post">
-                    <input type="text" name="username" placeholder="Username" required="">
-                    <input type="password" name="password" placeholder="Password" required="">
-                    <button class="waves-effect waves-light btn left">log in</button><br><br>
-                </form>
-            </div>
-
-
-        </div>
-    </div>
-    <div class="container col s3">
-        <h4>Register</h4>
-        <div class="login-form">
-            <form action="/signup" method="POST">
-                <input type="text" name="first" placeholder="First Name" required="">
-                <input type="text" name="last" placeholder="Last Name" required="">
-                <input type="text" name="username" placeholder="Username" required="">
-                <input type="password" name="password" placeholder="Password" required="">
-                <input type="password" name="password2" placeholder="Re-enter Password" required="">
-
-
-                <!-- <input type="password" name="password" placeholder="Confirm Password" required=""> -->
-                <button class="waves-effect waves-light btn left">register</button><br><br>
-            </form>
-        </div>
-
-        <!--uncomment after we have set up our proper middleware-->
-        {{#if errors}}
-            <div class="container">
-                <p style="color:red"> {{errors}} </p>
-            </div>
-        {{/if}}
-
-        {{#if usertaken}}
-            <div class="container">
-                <p style="color:red"> {{usertaken}} </p>
-            </div>
-        {{/if}}
-
-        {{#if success}}
-            <div class="container">
-                <p style="color:green"> {{success}} </p>
-            </div>
-        {{/if}}
-
-    </div>
-
-
+  </div>
+  <div class="parallax"><img src="background/Elegant_Background-13.jpg" alt="Unsplashed background img 13"></div>
 </div>
+
+
+  <div class="container">
+    <div class="section">
+
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center pink-text"><i class="material-icons">flash_on</i></h2>
+            <h5 class="center">Instant data</h5>
+
+            <p class="light">Information is gathered using a Google Chrome extension, and then displayed on a beautiful and secure password-protected website.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center pink-text"><i class="material-icons">group</i></h2>
+            <h5 class="center">User Experience Focused</h5>
+
+            <p class="light">Know exactly how much time you spend on your desktop on the Internet. Use this information however you like, it’s yours to keep!</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center pink-text"><i class="material-icons">settings</i></h2>
+            <h5 class="center">Easy to work with</h5>
+
+            <p class="light">We have created a beautiful tool to help you easily understand your internet analtyical footprint.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light">Control your online time consumption</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="background/Elegant_Background-16.jpg" alt="Unsplashed background img 16"></div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+
+      <div class="row">
+        <div class="col s12 center">
+          <h3><i class="mdi-content-send brown-text"></i></h3>
+          <h4>Short History of Our Beginnings</h4>
+          <p class="left-align light">Internet companies often maintain a detailed understanding of our minds. Google knows what we search. Facebook, Twitter, Instagram, Snapchat, they know what interests us and with whom we interact. Amazon knows what we buy. YouTube and Netflix know what we watch. With this information, Internet companies can choose which information we see in order to entice us to use their platform more and more. Because of this, humans spend more and more time online. We don’t know how much time we spend online. Maybe if we knew, we could make more conscious choices about how we spent our time.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <h5 class="header col s12 light">In today's age, we spent more time online than ever before.</h5>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="background/Elegant_Background-6.jpg" alt="Unsplashed background img 6"></div>
+  </div>
+
+  <footer class="page-footer pink">
+    <!-- <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Company Bio</h5>
+          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job for our Software Engineering Class. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Settings</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">Link 1</a></li>
+            <li><a class="white-text" href="#!">Link 2</a></li>
+            <li><a class="white-text" href="#!">Link 3</a></li>
+            <li><a class="white-text" href="#!">Link 4</a></li>
+          </ul>
+        </div>
+      </div>
+    </div> -->
+    <div class="footer-copyright">
+      NYU Computer Science '18
+    </div>
+  </footer>
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
