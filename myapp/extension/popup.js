@@ -147,12 +147,12 @@ function drawBarChart() {
         // collect data for bar chart
         var index = 0;
 
-        for (var prop in result) {
+        for (var prop in result.domains) {
 
-            if (result.hasOwnProperty(prop)) {
+            if (result.domains.hasOwnProperty(prop)) {
 
                 // add time and website to bar chart
-                chart.options.data[0].dataPoints.push({ y: result[prop].time, label: prop });
+                chart.options.data[0].dataPoints.push({ y: result.domains[prop].time, label: prop });
                 index++;
             }
         }
@@ -284,7 +284,9 @@ class DrawChart {
 function populatePopup() {
 
     chrome.storage.local.get(function(result) {
+        
         if (result.isRecording == undefined) {
+
             chrome.storage.local.set({ isRecording: true }, function() {});
 
         }
@@ -292,10 +294,10 @@ function populatePopup() {
             $('#Recording').prop('checked', true);
             
             //upload result for inspection in console
-
-            var counter = 1;
             var table = document.getElementById("timetable");
             var totalTime = 0;
+            var counter = 1;
+            var dataPoints = [];
             //iterates through recieved data by property
 
             //loop through first time to find total time
@@ -304,37 +306,48 @@ function populatePopup() {
 
                     //find total time to do calculations for percentage
                     totalTime = totalTime + result.domains[prop].time;
-                }
-            }
 
-            //loop through second time to display data
-            for (var prop in result.domains) {
-
-                if (result.domains.hasOwnProperty(prop)) {
-
-                    var row = table.insertRow(counter);
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
-
-                    cell1.innerHTML = prop;
-
-                    //display time rounded to 2nd decimail
-
-                    cell2.innerHTML = result.domains[prop].time.toFixed(2);
-
-                    //display percentage rounded to whole number
-                    cell3.innerHTML = Math.round(result.domains[prop].time / totalTime * 100) + "%";
+                    dataPoints.push({time:result.domains[prop].time, label:prop});
                     counter++;
                 }
             }
 
+            // compare function for sort
+            function compareDataPointYDescend( dataPoint1, dataPoint2) {
+                return (dataPoint2.time-dataPoint1.time);
+            }   
+
+            // sort dataPoints
+            dataPoints.sort(compareDataPointYDescend);
+
+            //loop through second time to display data          
+            for ( var i = 1; i< counter; i++ ) {
+
+                var row = table.insertRow(i);
+                var cell1 = row.insertCell(0);
+                var cell2 = row.insertCell(1);
+                var cell3 = row.insertCell(2);
+
+                cell1.innerHTML = dataPoints[i-1].label;
+
+                //display time rounded to 2nd decimail
+                cell2.innerHTML = dataPoints[i-1].time.toFixed(2);
+
+                //display percentage rounded to whole number
+                cell3.innerHTML = Math.round(dataPoints[i-1].time / totalTime * 100) + "%";
+            }
+
             drawChart.draw();
+
         } else {
+
             $('#Recording').prop('checked', false);
         }
+
     });
+
 }
+
 let drawChart = new DrawChart();
 
 document.addEventListener('DOMContentLoaded', function(event) {
