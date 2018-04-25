@@ -1,67 +1,67 @@
-let bkg = chrome.extension.getBackgroundPage();
-const port = chrome.extension.connect({
-    name: "Sample Communication"
-});
+var userEmail = null;
 
 
-(function() {
-    var config = {
-        apiKey: "AIzaSyCJdWu2tUCqwnemXS4a5PFdv3tc_EmHDHo",
-        authDomain: "ott-se.firebaseapp.com",
-        databaseURL: "https://ott-se.firebaseio.com",
-        projectId: "ott-se",
-        storageBucket: "ott-se.appspot.com",
-        messagingSenderId: "862203884090"
-    };
-    firebase.initializeApp(config);
-    const txtEmail = document.getElementById('txtEmail');
-    const txtPassword = document.getElementById('txtPassword');
-    const btnLogin = document.getElementById('btnLogin');
-    const btnSignup = document.getElementById('btnSignup');
-    const btnLogout = document.getElementById('btnLogout');
+var config = {
+    apiKey: "AIzaSyA52JSq5mXVIpTaE1KxnJ4bNUJ1P6EDcgw",
+    authDomain: "ott-se-738b0.firebaseapp.com",
+    databaseURL: "https://ott-se-738b0.firebaseio.com",
+    projectId: "ott-se-738b0",
+    storageBucket: "",
+    messagingSenderId: "57707341948"
+};
+firebase.initializeApp(config);
+const txtEmail = document.getElementById('txtEmail');
+const txtPassword = document.getElementById('txtPassword');
+const btnLogin = document.getElementById('btnLogin');
+const btnSignup = document.getElementById('btnSignup');
+const btnLogout = document.getElementById('btnLogout');
 
-    btnLogin.addEventListener('click', e => {
-        const email = txtEmail.value;
-        const pass = txtPassword.value;
-        const auth = firebase.auth();
-        const promise = auth.signInWithEmailAndPassword(email, pass).catch(function(error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/wrong-password') {
-                alert('Wrong password.');
-            } else {
-                alert(errorMessage);
-            }
-            console.log(error);
-        });
-        promise.catch(e => console.log(e.message));
-    })
-
-    btnSignup.addEventListener('click', e => {
-        const email = txtEmail.value;
-        const pass = txtPassword.value;
-        const auth = firebase.auth();
-        const promise = auth.createUserWithEmailAndPassword(email, pass);
-        promise.catch(e => console.log(e.message));
-    })
-
-    btnLogout.addEventListener('click', e => {
-        firebase.auth().signOut();
-    })
-
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-        if (firebaseUser) {
-            console.log(firebaseUser);
-
+btnLogin.addEventListener('click', e => {
+    const email = txtEmail.value;
+    const pass = txtPassword.value;
+    const auth = firebase.auth();
+    const promise = auth.signInWithEmailAndPassword(email, pass).then(function(user) {
+        userEmail = user.email;
+        console.log(userEmail);
+    }).catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        if (errorCode === 'auth/wrong-password') {
+            alert('Wrong password.');
         } else {
-            console.log('not logged in');
+            alert(errorMessage);
         }
-    })
-}());
+        console.log(error);
+    });
+    promise.catch(e => console.log(e.message));
+    userEmail = email;
+})
 
-let name;
-let password;
+btnSignup.addEventListener('click', e => {
+    const email = txtEmail.value;
+    const pass = txtPassword.value;
+    const auth = firebase.auth();
+    const promise = auth.createUserWithEmailAndPassword(email, pass);
+    promise.catch(e => console.log(e.message));
+})
+
+btnLogout.addEventListener('click', e => {
+    firebase.auth().signOut().then(function() {
+        console.log("signout");
+    });
+})
+
+firebase.auth().onAuthStateChanged(firebaseUser => {
+    if (firebaseUser) {
+        console.log('logged in');
+
+    } else {
+        console.log('not logged in');
+    }
+})
+
+
 
 
 //Draw Pie Chart
@@ -284,20 +284,19 @@ class DrawChart {
 function populatePopup() {
 
     chrome.storage.local.get(function(result) {
-        
+
+
         if (result.isRecording == undefined) {
-
             chrome.storage.local.set({ isRecording: true }, function() {});
-
         }
         if (result.isRecording) {
             $('#Recording').prop('checked', true);
-            
+
             //upload result for inspection in console
             var table = document.getElementById("timetable");
             var totalTime = 0;
-            var counter = 1;
-            var dataPoints = [];
+            var counter = 0;
+
             //iterates through recieved data by property
 
             //loop through first time to find total time
@@ -305,38 +304,39 @@ function populatePopup() {
                 if (result.domains.hasOwnProperty(prop)) {
 
                     //find total time to do calculations for percentage
-                    totalTime = totalTime + result.domains[prop].time;
+                    totalTime = result.domains[prop].time;
 
-                    dataPoints.push({time:result.domains[prop].time, label:prop});
-                    counter++;
                 }
             }
 
             // compare function for sort
-            function compareDataPointYDescend( dataPoint1, dataPoint2) {
-                return (dataPoint2.time-dataPoint1.time);
-            }   
-
-            // sort dataPoints
-            dataPoints.sort(compareDataPointYDescend);
-
-            //loop through second time to display data          
-            for ( var i = 1; i< counter; i++ ) {
-
-                var row = table.insertRow(i);
-                var cell1 = row.insertCell(0);
-                var cell2 = row.insertCell(1);
-                var cell3 = row.insertCell(2);
-
-                cell1.innerHTML = dataPoints[i-1].label;
-
-                //display time rounded to 2nd decimail
-                cell2.innerHTML = dataPoints[i-1].time.toFixed(2);
-
-                //display percentage rounded to whole number
-                cell3.innerHTML = Math.round(dataPoints[i-1].time / totalTime * 100) + "%";
+            function compareDataPointYDescend(dataPoint1, dataPoint2) {
+                return (dataPoint2.time - dataPoint1.time);
             }
 
+            // sort dataPoints
+            // result.domains.sort(compareDataPointYDescend);
+
+            //loop through second time to display data          
+            for (var prop in result.domains) {
+                if (result.domains.hasOwnProperty(prop)) {
+
+                    var row = table.insertRow(counter);
+                    var cell1 = row.insertCell(0);
+                    var cell2 = row.insertCell(1);
+                    var cell3 = row.insertCell(2);
+
+                    cell1.innerHTML = prop;
+
+                    //display time rounded to 2nd decimail
+                    cell2.innerHTML = result.domains[prop].time.toFixed(2);
+
+                    //display percentage rounded to whole number
+                    cell3.innerHTML = Math.round(result.domains[prop].time / totalTime * 100) + "%";
+                    counter++;
+                }
+            }
+            totalTime = 0;
             drawChart.draw();
 
         } else {
@@ -345,54 +345,74 @@ function populatePopup() {
         }
 
     });
+}
 
+
+function clearPopup() {
+    document.getElementById("timetable").innerHTML = "";
 }
 
 let drawChart = new DrawChart();
 
-document.addEventListener('DOMContentLoaded', function(event) {
-
-    populatePopup();
 
 
 
-
-    document.getElementById('charts').addEventListener('click', function() {
-
-        drawChart.draw();
-
-    })
+populatePopup();
 
 
-    $("#Recording").change(
-        function() {
-            if ($(this).prop('checked') == true) {
-                chrome.storage.local.set({ isRecording: true }, function() {})
-                $("#timetable").show();
-                $("#chart").show();
-                populatePopup();
+document.getElementById('charts').addEventListener('click', function() {
 
-            } else {
-                chrome.storage.local.get(function(result) {
-                    console.log(result.domains);
-                    sendToDB(result.domains);
+    drawChart.draw();
 
-                });
-                //the clear function is not working for some reason. 
-                // I want to delete the current data whenever the recording button is unpress
-                chrome.storage.local.clear(function() {
-                    var error = chrome.runtime.lastError;
-                    if (error) {
-                        console.error(error);
-                    }
-                });
+})
 
-                chrome.storage.local.set({ isRecording: false }, function() {});
-                $("#timetable").hide();
-                $("#chart").hide();
+$("#Recording").change(
+    function() {
+        if ($(this).prop('checked') == true) {
+            console.log("results after change");
+
+            chrome.storage.local.get(function(result) {
+                console.log("results");
+                console.log(result);
+            });
+            chrome.storage.local.clear();
+            chrome.storage.local.set({ isRecording: true }, function() {})
+            populatePopup();
+            $("#timetable").show();
+            $("#chart").show();
 
 
-            }
-        });
+        } else {
+            chrome.storage.local.get(function(result) {
 
-});
+                result['time'] = new Date();
+                result['userEmail'] = userEmail;
+
+
+                sendToDB(result);
+
+            });
+            //the clear function is not working for some reason. 
+            // I want to delete the current data whenever the recording button is unpress
+            chrome.storage.local.clear(function() {
+                console.log("clearing");
+
+                var error = chrome.runtime.lastError;
+                if (error) {
+                    console.error(error);
+                }
+            });
+            clearPopup();
+
+            chrome.storage.local.get(function(result) {
+                console.log(result);
+            });
+            chrome.storage.local.set({ isRecording: false }, function() {
+                console.log("here");
+            });
+            $("#timetable").hide();
+            $("#chart").hide();
+
+
+        }
+    });

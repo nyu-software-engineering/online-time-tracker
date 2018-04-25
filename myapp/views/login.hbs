@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    </script>
+    <script>
+    $(document).ready(function() {
+        var user, pass;
+        $("#login").click(function() {
+            email = $("#txtEmail").val();
+            pass = $("#txtPassword").val();
+            $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
+                if (data === 'done') {
+                    alert("login success");
+                }
+            });
+        });
+        $("#signup").click(function() {
+            email = $("#txtEmail").val();
+            pass = $("#txtPassword").val();
+            $.post("http://localhost:3000/signup", { email: email, password: pass }, function(data) {
+                if (data === 'done') {
+                    alert("login success");
+                }
+            });
+        });
+    });
+    </script>
+</head>
+<form action="login">
+    <label for="email">Email:</label>
+    <input id="txtEmail" type="email" name="email" value="" placeholder="Email">
+    <label for="password">Password:</label>
+    <input id='txtPassword' type="password" name="password" value="" placeholder="Password">
+    <input type="button" id="login" value="Login">
+    <input type="button" id="signup" value="Sign Up">
+</form>
+<html>
