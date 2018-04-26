@@ -4,7 +4,7 @@
  "browser_action" field in manifest.json contains the "default_popup" key with
  value "popup.html".
  -->
-<html>
+<html lang="en">
 
 <head>
     <title>Getting Started Extension's Popup</title>
@@ -13,7 +13,6 @@
         margin: 10px;
         white-space: nowrap;
     }
-
 
 
     h1 {
@@ -43,17 +42,64 @@
     <button id="btnLogin" class="btn btn-action"> login </button>
     <button id="btnSignup" class="btn btn-secondary"> sign up </button>
     <button id="btnLogout" class="btn btn-action"> log out </button>
-    Recording:
-    <form>
-        <input type="checkbox" id="Recording" name="isRecording" value="myvalue" checked>
+
+
+    <script type='text/javascript' src="timer.js"></script>
+
+    <style>
+        body {min-width: 240px;}
+        #display, #settings {margin-top: 4px;}
+        #modify {margin-bottom: 4px;}
+    </style>
+
+    <h3>
+        How long do you wish to stay online?
+
+    </h3>
+    <div id="options">
+        <span>
+            <button id="cancel"> Cancel</button> &nbsp; &nbsp; &nbsp;
+            <button id="resume">Resume</button> &nbsp; &nbsp; &nbsp;
+            <button id="pause">Pause</button> &nbsp; &nbsp; &nbsp;
+            <button id="restart">Restart</button> &nbsp; &nbsp; &nbsp;
+        </span>
+    </div>
+    <pre> </pre>
+    <div id="setTimer">
+
+        <form>
+            Set Time (min):<input id="Time" type='number'><br>
+            <input type="submit" id="start" value="start">
+        </form>
+    </div>
+    <div id="display">
+        <span>
+            <p> Time left:<p>
+            <p id="timeLeft"></p>
+        </span>
+    </div>
+
+
+
+    <p>
+        Recording:
+        <form>
+            <input type="checkbox" id="Recording" name="isRecording" value="myvalue" checked>
+        </form>
+    </p>
+
+    <p>
+
         <table id="timetable" style="width:100%">
+                
             <tr>
                 <th>Website</th>
                 <th>Time</th>
                 <th>Percent</th>
             </tr>
         </table>
-    </form>
+    </p>
+
     <form id="charts">
         <pre> </pre>
         <pre> </pre>
