@@ -1,7 +1,7 @@
 
 // Followed the template method, has all the logic of the timer which will be abstracted in the UI
 
-/*Also implemented the helper.parseTime function here which saved me from writing a lot of extracode over and over again,
+/*Also implemented the parseTime function here which saved me from writing a lot of extracode over and over again,
 
 while also making code more readable*/
 
@@ -13,8 +13,6 @@ let pauseDate;
 let alarmDate;
 let x=3;
 console.log('hi from timerfunctions');
-let helper=new backgroundFunctions();
-
 
 console.log('timer functions');
 
@@ -29,8 +27,8 @@ function timeLeft(timeMilli){
 	clearTimeout(timeout);
 	pauseDate = null;
 
-// implement helper.parseTime as a demonstration of the template method
-	let time=helper.parseTime(timeMilli);
+// implement parseTime as a demonstration of the template method
+	let time=parseTime(timeMilli);
 	alarmDate = new Date();
 	chrome.storage.sync.set({alarmDate: alarmDate}, function(){
 
@@ -96,7 +94,7 @@ function getTimeLeftString()
 	console.log(alarmDate)
 	//can apply parse time here;
     let timeLeft = getTimeLeft();
-	let time=helper.parseTime(timeLeft);
+	let time=parseTime(timeLeft);
 
 	let secs=time['seconds'];
 	let mins=time['minutes']
