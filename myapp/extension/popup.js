@@ -1,7 +1,6 @@
-var userEmail = null;
+let userEmail = null;
 
-
-var config = {
+let config = {
     apiKey: "AIzaSyA52JSq5mXVIpTaE1KxnJ4bNUJ1P6EDcgw",
     authDomain: "ott-se-738b0.firebaseapp.com",
     databaseURL: "https://ott-se-738b0.firebaseio.com",
@@ -15,6 +14,7 @@ const txtPassword = document.getElementById('txtPassword');
 const btnLogin = document.getElementById('btnLogin');
 const btnSignup = document.getElementById('btnSignup');
 const btnLogout = document.getElementById('btnLogout');
+const background = chrome.extension.getBackgroundPage();
 
 btnLogin.addEventListener('click', e => {
     const email = txtEmail.value;
@@ -25,8 +25,8 @@ btnLogin.addEventListener('click', e => {
         console.log(userEmail);
     }).catch(function(error) {
         // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
+        let errorCode = error.code;
+        let errorMessage = error.message;
         if (errorCode === 'auth/wrong-password') {
             alert('Wrong password.');
         } else {
@@ -62,14 +62,15 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
 })
 
 
-
+console.log(background.domains);
 
 //Draw Pie Chart
 function drawPieChart() {
-    chrome.storage.local.get(function(result) {
+
+        chrome.storage.local.get(function(result) {
 
         //set up piechart
-        var piechart = new CanvasJS.Chart("chart", {
+        let piechart = new CanvasJS.Chart("chart", {
             animationEnabled: true,
 
             title: {
@@ -89,9 +90,9 @@ function drawPieChart() {
         });
 
         //collect data for pie chart
-        var index = 0;
+        let index = 0;
 
-        for (var prop in result.domains) {
+        for (let prop in result.domains) {
 
             if (result.domains.hasOwnProperty(prop)) {
 
@@ -114,6 +115,9 @@ function drawPieChart() {
         //draw pie chart 
         piechart.render();
     });
+
+   
+    
 }
 
 //Draw Bar Chart
@@ -122,7 +126,7 @@ function drawBarChart() {
     chrome.storage.local.get(function(result) {
 
         // setup bar chart
-        var chart = new CanvasJS.Chart("chart", {
+        let chart = new CanvasJS.Chart("chart", {
 
             animationEnabled: true,
 
@@ -145,9 +149,9 @@ function drawBarChart() {
         });
 
         // collect data for bar chart
-        var index = 0;
+        let index = 0;
 
-        for (var prop in result.domains) {
+        for (let prop in result.domains) {
 
             if (result.domains.hasOwnProperty(prop)) {
 
@@ -179,7 +183,7 @@ function drawColumnChart() {
     chrome.storage.local.get(function(result) {
 
         // setup column chart
-        var chart = new CanvasJS.Chart("chart", {
+        let chart = new CanvasJS.Chart("chart", {
 
             animationEnabled: true,
 
@@ -196,9 +200,9 @@ function drawColumnChart() {
         });
 
         // collect data for bar chart
-        var index = 0;
+        let index = 0;
 
-        for (var prop in result.domains) {
+        for (let prop in result.domains) {
 
             if (result.domains.hasOwnProperty(prop)) {
                 // add time and website to bar chart
@@ -293,18 +297,19 @@ function populatePopup() {
             $('#Recording').prop('checked', true);
 
             //upload result for inspection in console
-            var table = document.getElementById("timetable");
-            var totalTime = 0;
-            var counter = 0;
+            let table = document.getElementById("timetable");
+            let totalTime = 0;
+            let counter = 1;
+            let time ="";
 
             //iterates through recieved data by property
 
             //loop through first time to find total time
-            for (var prop in result.domains) {
+            for (let prop in result.domains) {
                 if (result.domains.hasOwnProperty(prop)) {
 
                     //find total time to do calculations for percentage
-                    totalTime = result.domains[prop].time;
+                    totalTime += result.domains[prop]['time'];
 
                 }
             }
@@ -317,26 +322,36 @@ function populatePopup() {
             // sort dataPoints
             // result.domains.sort(compareDataPointYDescend);
 
-            //loop through second time to display data          
-            for (var prop in result.domains) {
+
+            //loop through second balls to display data          
+            for (let prop in result.domains) {
                 if (result.domains.hasOwnProperty(prop)) {
 
-                    var row = table.insertRow(counter);
-                    var cell1 = row.insertCell(0);
-                    var cell2 = row.insertCell(1);
-                    var cell3 = row.insertCell(2);
+                    let row = table.insertRow(counter);
+                    let cell1 = row.insertCell(0);
+                    let cell2 = row.insertCell(1);
+                    let cell3 = row.insertCell(2);
 
                     cell1.innerHTML = prop;
 
                     //display time rounded to 2nd decimail
-                    cell2.innerHTML = result.domains[prop].time.toFixed(2);
+                    console.log(result.domains[prop].time);
+                    cell2.innerText = background.formatTime(result.domains[prop].time*1000);
 
                     //display percentage rounded to whole number
-                    cell3.innerHTML = Math.round(result.domains[prop].time / totalTime * 100) + "%";
+                    cell3.innerHTML = Math.round((result.domains[prop]['time'] / totalTime )* 100) + "%";
                     counter++;
                 }
             }
-            totalTime = 0;
+
+            let finalRow = table.insertRow(counter);
+            let cell1 = finalRow.insertCell(0);
+            let cell2 = finalRow.insertCell(1);
+            let cell3 = finalRow.insertCell(2);
+
+            cell1.innerText = 'Total';
+            cell2.innerText = background.formatTime(totalTime*1000);
+            cell3.innerText = '100'
             drawChart.draw();
 
         } else {
@@ -368,14 +383,21 @@ document.getElementById('charts').addEventListener('click', function() {
 
 $("#Recording").change(
     function() {
+
+        chrome.storage.local.clear();
+        background.clear();
+
         if ($(this).prop('checked') == true) {
+            console.log('not clearing');
             console.log("results after change");
 
             chrome.storage.local.get(function(result) {
                 console.log("results");
                 console.log(result);
             });
-            chrome.storage.local.clear();
+
+            background.domains = {};
+            // chrome.storage.local.clear();
             chrome.storage.local.set({ isRecording: true }, function() {})
             populatePopup();
             $("#timetable").show();
@@ -394,14 +416,14 @@ $("#Recording").change(
             });
             //the clear function is not working for some reason. 
             // I want to delete the current data whenever the recording button is unpress
-            chrome.storage.local.clear(function() {
-                console.log("clearing");
+            // chrome.storage.local.remove(['domains'],function() {
+            //     console.log("clearing");
 
-                var error = chrome.runtime.lastError;
-                if (error) {
-                    console.error(error);
-                }
-            });
+            //     let error = chrome.runtime.lastError;
+            //     if (error) {
+            //         console.error(error);
+            //     }
+            // });
             clearPopup();
 
             chrome.storage.local.get(function(result) {

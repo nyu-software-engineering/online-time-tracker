@@ -2,76 +2,68 @@
 
 console.log("foo loaded");
 
+let domains = {};
+let activeURL = null;
+let startTime; //startstimer
+let currentTime; //time already spent on active url
 
-class backgroundFunctions {
+function switchCurrentTab(url) {
 
-    constructor() { // setup a constructor to hold defaults
-
-        this.domains = {};
-        this.activeURL = null;
-        this.startTime; //startstimer
-        this.currentTime; //time already spent on active url
-
-    }
-
-
-    switchCurrentTab(url) {
-
-        if (url !== this.activeURL) {
-            this.activeURL = url;
-            // console.log(this.domains[url]['time']);s
+        if (url !== activeURL) {
+            activeURL = url;
+            // console.log(domains[url]['time']);s
             // console.log('switched url to:' +url);
         }
 
-        this.startTime = new Date();
+        startTime = new Date();
     }
 
-    getCurrentTime(url) {
+function getCurrentTime(url) {
 
-        if (this.domains[url] === undefined) {
-            this.domains[url] = {}
-            this.domains[url]['time'] = 0;
+        if (domains[url] === undefined) {
+            domains[url] = {}
+            domains[url]['time'] = 0;
         }
 
-        return this.domains[url]['time'];
+        return domains[url]['time'];
 
     }
 
-    stopTime(url) {
+function stopTime(url) {
 
         if (url !== null) {
 
-            window.clearInterval(this.activeURL)
+            window.clearInterval(activeURL)
         }
-        this.activeURL = null;
+        activeURL = null;
 
     }
-    updateTime(url) {
+function updateTime(url) {
 
         if (url !== undefined) {
 
-            let deltaTime = new Date() - this.startTime;
+            let deltaTime = new Date() - startTime;
             deltaTime = deltaTime / 1000
-            // console.log(`${url}s currentTime is ${this.currentTime}`);
-            this.domains[url]['time'] = this.currentTime + deltaTime;
-
+            // console.log(`${url}s currentTime is ${currentTime}`);
+            let updatedTime =  currentTime + deltaTime;
+            domains[url]['time'] = updatedTime;
             //set domain and time to chrome storage local
-            chrome.storage.local.set({ domains: this.domains }, function() {
+            chrome.storage.local.set({ domains: domains }, function() {
 
             });
-            // console.log(this.activeURL,this.domains[url]['time']);
+            // console.log(activeURL,domains[url]['time']);
         }
 
 
     }
 
-    recordTime(url) {
-        this.activeURL = url;
-        this.startTime = new Date();
+function recordTime(url) {
+        activeURL = url;
+        startTime = new Date();
     }
 
-    getHostName(url) {
-        let hostName = this.parseUrl(url);
+function getHostName(url) {
+        let hostName = parseUrl(url);
         if (hostName != null) {
             let parts = hostName.split('.').reverse();
 
@@ -86,7 +78,7 @@ class backgroundFunctions {
         return hostName;
     }
 
-    parseUrl(url) {
+function parseUrl(url) {
         //regex taken from stackoverflow
         let match = url.match(/:\/\/(www[0-9]?\.)?(.[^/:]+)/i);
         if (match != null && match.length > 2 && typeof match[2] === 'string' && match[2].length > 0) {
@@ -96,7 +88,7 @@ class backgroundFunctions {
         }
     }
 
-    parseTime(milliseconds) {
+function  parseTime(milliseconds) {
 
         let time = {};
         let rawSeconds = milliseconds / 1000;
@@ -122,12 +114,26 @@ class backgroundFunctions {
 
     }
 
-}
+function formatTime(time){
+    
+            var time=parseTime(time);
+            var secs=time['seconds'];
+            var mins=time['minutes']
+            var hours=time['hours'] 
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+            if( secs< 10){
+                secs = "0" + secs;
+            }
+            if(mins< 10) {
+                mins = "0" + mins
+            };
+            if(hours< 10){
+                hours = "0" + hours;
+            } 
+            return ((hours > 0 ? hours + ":" : "") + mins + ":" + secs);
+    }
 
-    module.exports = backgroundFunctions;
-} else {
+function clear(){
 
-    window.backgroundFunctions = backgroundFunctions;
+    domains = {};
 }
