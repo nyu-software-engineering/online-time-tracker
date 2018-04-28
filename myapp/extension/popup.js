@@ -256,6 +256,13 @@ class DrawChart {
         else {
             this.currentState = "pieChart";
         }
+
+    }
+
+        //Sets state based on what current state is 
+    setState(inputState)
+    {
+        this.currentState = inputState;
     }
 
     draw() {
@@ -373,6 +380,52 @@ let drawChart = new DrawChart();
 
 
 populatePopup();
+
+
+function drawPieChart2 ()
+{
+
+    console.log('click to draw pie chart');
+    drawChart.setState("pieChart");
+    drawChart.draw();
+    refreshDisplay();
+
+}
+
+function drawBarChart2() 
+{
+    
+    console.log('click to draw bar chart');
+    drawChart.setState("barChart");
+    drawChart.draw();
+    refreshDisplay();
+
+}
+
+function drawColumnChart2() 
+{
+
+    console.log('click to draw column chart');
+    drawChart.setState("columnChart");
+    drawChart.draw();
+    refreshDisplay();
+
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    load();
+    console.log('click to draw chart');
+
+
+    //Draws Bar
+    document.querySelector('#bar').addEventListener('click', drawBarChart2);
+
+    //Draws Pie
+    document.querySelector('#pie').addEventListener('click', drawPieChart2);
+
+    //Draws Column 
+    document.querySelector('#column').addEventListener('click', drawColumnChart2);
+});
 
 
 document.getElementById('charts').addEventListener('click', function() {
