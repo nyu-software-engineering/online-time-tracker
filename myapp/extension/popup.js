@@ -292,8 +292,43 @@ class DrawChart {
     }
 };
 
+
+// let realtime;
+
+// function refreshTime(result,totalTime){
+
+// 	let table=document.getElementById("timetable");
+// 	realime = window.setInterval(function(){
+// 				let counter = 1;
+// 				for (let prop in result.domains) {
+
+// 					for(let i=0; i<3;i++){
+
+
+// 						if (result.domains.hasOwnProperty(prop)) {
+
+// 				           table.rows[counter].cells[0].innerText = prop;
+
+// 				            //display time rounded to 2nd decimail
+// 				            console.log(result.domains[prop].time);
+// 				            table.rows[counter].cells[1].innerText = background.formatTime(result.domains[prop].time*1000);
+
+// 				            //display percentage rounded to whole number
+// 				            table.rows[counter].cells[2].innerText= Math.round((result.domains[prop]['time'] / totalTime )* 100) + "%";
+// 				            counter++;
+// 				            console.log('refreshTime');
+// 				        }
+// 				    }
+// 				}
+		        
+// 		    },1000)
+
+// }
+
+
 function populatePopup() {
 
+	window.clearInterval(updatePopupId);
     chrome.storage.local.get(function(result) {
 
 
@@ -306,7 +341,7 @@ function populatePopup() {
             //upload result for inspection in console
             let table = document.getElementById("timetable");
             let totalTime = 0;
-            let counter = 1;
+            let counter = 0;
             let time ="";
 
             //iterates through recieved data by property
@@ -330,7 +365,8 @@ function populatePopup() {
             // result.domains.sort(compareDataPointYDescend);
 
 
-            //loop through second balls to display data          
+            //loop through second balls to display data 
+
             for (let prop in result.domains) {
                 if (result.domains.hasOwnProperty(prop)) {
 
@@ -351,6 +387,9 @@ function populatePopup() {
                 }
             }
 
+
+            
+            // refreshTime(table,result,totalTime);
             let finalRow = table.insertRow(counter);
             let cell1 = finalRow.insertCell(0);
             let cell2 = finalRow.insertCell(1);
@@ -361,6 +400,7 @@ function populatePopup() {
             cell3.innerText = '100'
             drawChart.draw();
 
+
         } else {
 
             $('#Recording').prop('checked', false);
@@ -369,18 +409,98 @@ function populatePopup() {
     });
 }
 
+let updatePopupId;
+
+function updatePopup() {
+
+	updatePopupId = window.setInterval(function(){
+
+		chrome.storage.local.get(function(result) {
+	        if (result.isRecording == undefined) {
+	            chrome.storage.local.set({ isRecording: true }, function() {});
+	        }
+	        if (result.isRecording) {
+	            $('#Recording').prop('checked', true);
+
+	            //upload result for inspection in console
+	            let table = document.getElementById("timetable");
+	            let totalTime = 0;
+	            let counter = 0;
+	            let time ="";
+
+	            //iterates through recieved data by property
+
+	            //loop through first time to find total time
+	            for (let prop in result.domains) {
+	                if (result.domains.hasOwnProperty(prop)) {
+
+	                    //find total time to do calculations for percentage
+	                    totalTime += result.domains[prop]['time'];
+
+	                }
+	            }
+
+	            // compare function for sort
+	            function compareDataPointYDescend(dataPoint1, dataPoint2) {
+	                return (dataPoint2.time - dataPoint1.time);
+	            }
+
+	            // sort dataPoints
+	            // result.domains.sort(compareDataPointYDescend);
+
+
+	            //loop through second balls to display data 
+	            let tbody = table.querySelector('tbody')
+	            console.log("rows",tbody.rows)
+	            console.log("cells",tbody.rows[1].cells)
+	            for (let prop in result.domains) {
+
+	            	if(counter< tbody.rows.length){
+
+	            		console.log('row list', tbody.rows[counter]);
+	            		console.log('row list', tbody.rows[counter].cells[0].innerHTML='5');
+	            		console.log('row list', tbody.rows[counter].cells[1]);
+	            		console.log('row list', tbody.rows[counter].cells[2]);
+	            		tbody.rows[counter].cells[0].innerHTML = prop;
+	                    tbody.rows[counter].cells[1].innerHTML = background.formatTime(result.domains[prop].time*1000);
+	                    tbody.rows[counter].cells[2].innerHTML = Math.round((result.domains[prop]['time'] / totalTime )* 100) + "%";
+	                    counter++;
+
+	            	}
+	             }
+
+	       
+	            
+	            // // refreshTime(table,result,totalTime);
+	            // let finalRow = table.insertRow(counter);
+	            // let cell1 = finalRow.insertCell(0);
+	            // let cell2 = finalRow.insertCell(1);
+	            // let cell3 = finalRow.insertCell(2);
+
+	            // cell1.innerText = 'Total';
+	            // cell2.innerText = background.formatTime(totalTime*1000);
+	            // cell3.innerText = '100'
+	            
+
+
+	        } else {
+
+	            $('#Recording').prop('checked', false);
+	        }
+
+	    });
+	},1000);
+	
+
+}
+
+
 
 function clearPopup() {
     document.getElementById("timetable").innerHTML = "";
 }
 
 let drawChart = new DrawChart();
-
-
-
-
-populatePopup();
-
 
 function drawPieChart2 ()
 {
@@ -434,6 +554,10 @@ document.getElementById('charts').addEventListener('click', function() {
 
 })
 
+populatePopup();
+updatePopup();
+
+
 $("#Recording").change(
     function() {
 
@@ -452,7 +576,10 @@ $("#Recording").change(
             background.domains = {};
             // chrome.storage.local.clear();
             chrome.storage.local.set({ isRecording: true }, function() {})
+            
+           
             populatePopup();
+           
             $("#timetable").show();
             $("#chart").show();
 
