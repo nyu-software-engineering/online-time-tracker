@@ -1,34 +1,184 @@
-require("./../db.js");
-
-const express = require('express');
-const router = express.Router();
-
-// /* GET home page. */
-// router.get('/', ensureAuthenticated, function(req, res, next) {
-//   res.render('index', { title: 'Otter', first: req.user.first});
-// });
-
-router.get('/about', function(req, res, next) {
-    res.render('about');
-});
-
-router.get('/', function(req, res, next) {
-    res.render('index', { title: 'Otter' });
-});
-
-router.get('/login', function(req, res, next) {
-    res.render('login', { title: 'Otter' });
-});
+// // require("./../db.js");
+// module.exports = function(app, dbs) {
 
 
 
-// redirect to log in page if user is not logged in (ensures authentication)--> pair with app.get'/'
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next()
-    } else {
-        res.redirect('/')
-    }
+//     return app
+// }
+
+
+var firebase = require('firebase');
+require('firebase/auth');
+require('firebase/database');
+// Initialize Firebase for the application
+var config = {
+    apiKey: "AIzaSyA52JSq5mXVIpTaE1KxnJ4bNUJ1P6EDcgw",
+    authDomain: "ott-se-738b0.firebaseapp.com",
+    databaseURL: "https://ott-se-738b0.firebaseio.com",
+    projectId: "ott-se-738b0",
+    storageBucket: "",
+    messagingSenderId: "57707341948"
 };
+firebase.initializeApp(config);
 
-module.exports = router;
+
+
+function addDomainTimes(entries) {
+
+    var totalDomains = {}
+    for (var i = 0; i < entries.length; i++) {
+        var domains = entries[i].timeData.domains;
+        for (domain in domains) {
+            if (totalDomains.hasOwnProperty(domain)) {
+                totalDomains[domain] = totalDomains[domain] + domains[domain].time;;
+            } else {
+                totalDomains[domain] = domains[domain].time;
+
+            }
+        }
+    }
+    console.log(totalDomains)
+    return totalDomains;
+}
+
+
+module.exports = function(app, dbs) {
+    var rest = [];
+
+    function queryCollection(callback) {
+        dbs.production.collection('timeData').find({ "timeData.userEmail": "test@gmail.com" }).toArray((err, result) => {
+            if (err) {
+                console.log(err);
+            } else if (result.length > 0) {
+                rest = result;
+                callback();
+            }
+        });
+    }
+
+
+
+
+    app.get('/', function(req, res) {
+
+        res.render('../views/index', { title: 'Otter' });
+
+
+    })
+
+    app.post('/login', function(req, res) {
+        var email = req.body.email;
+        var password = req.body.password;
+        console.log("User name = " + email + ", password is " + password);
+        const auth = firebase.auth();
+        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(error);
+        });
+        var user = firebase.auth().currentUser;
+        console.log(user.email);
+    });
+
+    app.post('/signup', function(req, res) {
+        var email = req.body.email;
+        var password = req.body.password;
+        console.log("User name = " + email + ", password is " + password);
+        const auth = firebase.auth();
+        auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(error);
+        });
+    });
+
+    app.use(function(req, res, next) {
+        var user = firebase.auth().currentUser;
+        if (user == null) {
+            // if user is not logged-in redirect back to login page //
+            res.redirect('/');
+        } else {
+            next();
+        }
+    });
+
+    app.get('/download', function(req, res) {
+        console.log("HERE" + __dirname);
+        var file = '../extension';
+        res.download(file); // Set disposition and send it.
+    });
+
+    app.get('/login', function(req, res, next) {
+        res.render('login', { title: 'Otter' });
+
+    });
+
+
+
+    app.get('/data', function(req, res) {
+        var user = firebase.auth().currentUser;
+
+        queryCollection(function() {
+            var oneDay = [];
+            var oneWeek = [];
+            var oneMonth = [];
+            var total = [];
+
+            for (var i = 0; i < rest.length; i++) {
+                var date = new Date();
+                //one day
+                if (rest[i].timeData.time > date.getTime() - 60 * 60 * 24 * 1000) {
+                    console.log(rest[i]);
+                    oneDay.push(rest[i])
+                    oneWeek.push(rest[i])
+                    oneMonth.push(rest[i])
+                    total.push(rest[i])
+
+                }
+                // 7 day
+                else if (rest[i].timeData.time > date.getTime() - 60 * 60 * 24 * 7 * 1000) {
+                    console.log(rest[i]);
+                    oneWeek.push(rest[i])
+                    oneMonth.push(rest[i])
+                    total.push(rest[i])
+
+
+                }
+
+                //one month
+                else if (rest[i].timeData.time > date.getTime() - 60 * 60 * 24 * 30 * 1000) {
+                    console.log(rest[i]);
+                    oneMonth.push(rest[i])
+                    total.push(rest[i])
+
+                } else {
+                    total.push(rest[i])
+                }
+
+            }
+
+
+            res.render('data', {
+                email: user.email,
+                userData: rest,
+                oneDay: addDomainTimes(oneDay),
+                oneWeek: addDomainTimes(oneWeek),
+                oneMonth: addDomainTimes(oneMonth),
+                total: addDomainTimes(total),
+            });
+        });
+
+
+
+    })
+
+
+
+
+
+
+
+    return app
+}

@@ -24,7 +24,29 @@
         display: flex;
         justify-content: space-between;
     }
+
+    body {
+        min-width: 240px;
+    }
+
+    #display,
+    #settings {
+        margin-top: 4px;
+    }
+
+    #modify {
+        margin-bottom: 4px;
+    }
+
+    table.center {
+        margin-left: auto;
+        margin-right: auto;
+    }
     </style>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase-auth.js"></script>
     <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
@@ -35,40 +57,39 @@
 </head>
 
 <body>
-    <label for="email">Email:</label>
-    <input id="txtEmail" type="email" placeholder="Email">
-    <label for="password">Password:</label>
-    <input id='txtPassword' type="password" name="password" value="">
-    <button id="btnLogin" class="btn btn-action"> login </button>
-    <button id="btnSignup" class="btn btn-secondary"> sign up </button>
-    <button id="btnLogout" class="btn btn-action"> log out </button>
-
-
-    <script type='text/javascript' src="timer.js"></script>
-
-    <style>
-        body {min-width: 240px;}
-        #display, #settings {margin-top: 4px;}
-        #modify {margin-bottom: 4px;}
-    </style>
-
-    <h3>
+    <div id="loginForm">
+        <label for="email">Email:</label>
+        <input id="txtEmail" type="email" placeholder="Email">
+        <br>
+        <label for="password">Password:</label>
+        <input id='txtPassword' type="password" name="password" value="">
+        <br>
+        <button class="waves-effect waves-light btn" id="btnLogin" class="btn btn-action"> login </button>
+        <button class="waves-effect waves-light btn" id="btnSignup" class="btn btn-secondary"> sign up </button>
+        <script type='text/javascript' src="timer.js"></script>
+    </div>
+    <div id="logoutDiv">
+        <h3 id="logoutText">Welcome, </h3>
+        <button class="waves-effect waves-light btn" id="btnLogout" class="btn btn-action"> log out </button>
+    </div>
+    <h4>
         How long do you wish to stay online?
 
-    </h3>
+    </h4>
     <div id="options">
         <span>
-            <button id="cancel"> Cancel</button> &emsp; &emsp; &emsp;
-            <button id="resume">Resume</button> &emsp; &emsp; &emsp;
-            <button id="pause">Pause</button> &emsp; &emsp; &emsp;
-            <button id="restart">Restart</button> &emsp; &emsp; &emsp;
+            <button class="waves-effect waves-light btn" id="cancel"> Cancel</button> &emsp; &emsp; &emsp;
+            <button class="waves-effect waves-light btn" id="resume">Resume</button> &emsp; &emsp; &emsp;
+            <button class="waves-effect waves-light btn" id="pause">Pause</button> &emsp; &emsp; &emsp;
+            <button class="waves-effect waves-light btn" id="restart">Restart</button> &emsp; &emsp; &emsp;
         </span>
     </div>
     <pre> </pre>
     <div id="setTimer">
-
         <form>
-            Set Time (min):<input id="Time" type='number'><br>
+            Set Time (min):
+            <input id="Time" type='number'>
+            <br>
             <input type="submit" id="start" value="start">
         </form>
     </div>
@@ -78,20 +99,18 @@
             <p id="timeLeft"></p>
         </span>
     </div>
-
-
-
     <p>
-        Recording:
         <form>
-            <input type="checkbox" id="Recording" name="isRecording" value="myvalue" checked>
+            <p>
+                <label>
+                    <input type="checkbox" id="Recording" name="isRecording" value="myvalue" checked/>
+                    <span>Recording</span>
+                </label>
+            </p>
         </form>
     </p>
-
     <p>
-
-        <table id="timetable" style="width:100%">
-                
+        <table id="timetable" class="striped center" style="width:80%">
             <tr>
                 <th>Website</th>
                 <th>Time</th>
@@ -100,25 +119,34 @@
         </table>
     </p>
     <pre> </pre>
-
-    <h3>
+    <h4>
     <center> Choose a Chart Option or Click Chart to Change Style </center>
-    </h3>
-
+    </h4>
     <div id="options">
-            <center>
-                &emsp; &emsp; &emsp;&emsp; &emsp; &emsp;
-                <button id="pie"> Pie Chart </button>&emsp; &emsp; &emsp;&emsp; &emsp; &emsp;
-                <button id="bar"> Bar Chart </button> &emsp; &emsp; &emsp;&emsp; &emsp; &emsp;
-                <button id="column">Column Chart</button>&emsp; &emsp; &emsp;&emsp; &emsp; &emsp;
-            </center>
+        <center>
+            <button class="waves-effect waves-light btn" id="pie"> Pie Chart </button>
+            <button class="waves-effect waves-light btn" id="bar"> Bar Chart </button>
+            <button class="waves-effect waves-light btn" id="column">Column Chart</button>
+        </center>
     </div>
-
+    <!-- <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#bar">Bar</a></li>
+                <li class="tab col s3"><a href="#pie">Pie</a></li>
+                <li class="tab col s3"><a href="#column">Column</a></li>
+            </ul>
+        </div>
+        <div id="bar" class="col s12">Bar</div>
+        <div id="pie" class="col s12">Pie</div>
+        <div id="column" class="col s12">Column</div>
+    </div> -->
     <form id="charts">
         <pre> </pre>
         <div id="chart" style="height: 250px; width:100%;">
         </div>
     </form>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="popup.js"></script>
 </body>
 
