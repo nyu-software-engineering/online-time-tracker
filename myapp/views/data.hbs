@@ -1,3 +1,5 @@
+
+
 <nav class="white" role="navigation">
     <div class="nav-wrapper container">
         <a id="logo-container" href="#" class="brand-logo"><img src="images/o.png"></a>
@@ -12,58 +14,218 @@
         <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
 </nav>
-ONE DAY
-<table id="oneday">
-    {{#each oneDay}}
-    <tr>
-        <td>
-            {{@key}}
-        </td>
-        <td>
-            {{this}}
-        </td>
-    </tr>
-    {{/each}}
-</table>
-<br><br><br><br><br>
-ONE WEEK
-<table id="oneWeek">
-    {{#each oneWeek}}
-    <tr>
-        <td>
-            {{@key}}
-        </td>
-        <td>
-            {{this}}
-        </td>
-    </tr>
-    {{/each}}
-</table>
-<br><br><br><br><br>
-ONE MONTH 
-<table id="oneMonth">
-    {{#each oneMonth}}
-    <tr>
-        <td>
-            {{@key}}
-        </td>
-        <td>
-            {{this}}
-        </td>
-    </tr>
-    {{/each}}
-</table>
-<br><br><br><br><br>
-TOTAL
-<table id="total">
-      {{#each total}}
-    <tr>
-        <td>
-            {{@key}}
-        </td>
-        <td>
-            {{this}}
-        </td>
-    </tr>
-    {{/each}}
-</table>
+
+
+<div class="container">
+    <h5 class="header center col s12 light">Your Personal Consumption Data</h5>
+</div>
+
+<div class="container">
+
+ <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><i class="material-icons">remove</i>TODAY</div>
+      <div class="collapsible-body">
+        <div class="container col s6">
+            <h5 class="header center col s12 light">DAILY</h5>
+            <table id="oneday" class="centered striped highlight">
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Consumption</th>
+                    </tr>
+                </thead>
+                {{#each oneDay}}
+                <tr>
+                    <td>
+                        {{@key}}
+                    </td>
+                    <td>
+                        {{this}}
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+    </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">drag_handle</i>THIS WEEK</div>
+      <div class="collapsible-body">
+        <div class="container col s6">
+            <h5 class="header center col s12 light">WEEKLY</h5>
+
+            <table id="oneWeek" class="centered striped highlight">
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Consumption</th>
+                    </tr>
+                </thead>
+                {{#each oneWeek}}
+                <tr>
+                    <td>
+                        {{@key}}
+                    </td>
+                    <td>
+                        {{this}}
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">dehaze</i>THIS MONTH</div>
+      <div class="collapsible-body">
+        <div class="container col s6">
+            <h5 class="header center col s12 light">MONTHLY</h5>
+            <table id="oneMonth" class="centered striped highlight">
+                <thead>
+                    <tr>
+                        <th>Site</th>
+                        <th>Consumption</th>
+                    </tr>
+                </thead>
+                {{#each oneMonth}}
+                <tr>
+                    <td>
+                        {{@key}}
+                    </td>
+                    <td>
+                        {{this}}
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><i class="material-icons">equalizer</i>TOTAL</div>
+      <div class="collapsible-body">
+        <div class="container col s6">
+                <h5 class="header center col s12 light">TOTAL</h5>
+                <table id="total" class="centered striped highlight">
+                    <thead>
+                        <tr>
+                            <th>Site</th>
+                            <th>Consumption</th>
+                        </tr>
+                    </thead>
+                    {{#each total}}
+                    <tr>
+                        <td>
+                            {{@key}}
+                        </td>
+                        <td>
+                            {{this}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </table>
+            </div>
+
+      </div>
+    </li>
+  </ul>
+  </div>
+{{!-- 
+<div class="row">
+    <div class="container col s6">
+        <h5 class="header center col s12 light">ONE DAY</h5>
+        <table id="oneday" class="centered striped highlight">
+            <thead>
+                <tr>
+                    <th>Site</th>
+                    <th>Consumption</th>
+                </tr>
+            </thead>
+            {{#each oneDay}}
+            <tr>
+                <td>
+                    {{@key}}
+                </td>
+                <td>
+                    {{this}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+      <div class="container col s6">
+        <h5 class="header center col s12 light">ONE WEEK</h5>
+
+        <table id="oneWeek" class="centered striped highlight">
+            <thead>
+                <tr>
+                    <th>Site</th>
+                    <th>Consumption</th>
+                </tr>
+            </thead>
+            {{#each oneWeek}}
+            <tr>
+                <td>
+                    {{@key}}
+                </td>
+                <td>
+                    {{this}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="container col s6">
+        <h5 class="header center col s12 light">ONE MONTH</h5>
+        <table id="oneMonth" class="centered striped highlight">
+            <thead>
+                <tr>
+                    <th>Site</th>
+                    <th>Consumption</th>
+                </tr>
+            </thead>
+            {{#each oneMonth}}
+            <tr>
+                <td>
+                    {{@key}}
+                </td>
+                <td>
+                    {{this}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+      <div class="container col s6">
+        <h5 class="header center col s12 light">TOTAL</h5>
+        <table id="total" class="centered striped highlight">
+            <thead>
+                <tr>
+                    <th>Site</th>
+                    <th>Consumption</th>
+                </tr>
+            </thead>
+            {{#each total}}
+            <tr>
+                <td>
+                    {{@key}}
+                </td>
+                <td>
+                    {{this}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>
+
+ --}}
+
+<!--  Scripts-->
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="js/materialize.js"></script>
+<script src="js/init.js"></script>
