@@ -69,7 +69,8 @@ module.exports = function(app, dbs) {
         .then(function(){
             //success
             console.log(firebase.auth().currentUser.uid);
-            res.redirect("/");        
+            res.render("index",{user: "true"});
+            //res.redirect("/");        
         })
         .catch(function(error) {
             // Handle Errors here.
@@ -77,6 +78,7 @@ module.exports = function(app, dbs) {
             var errorMessage = error.message;
             console.log(error);
         })
+        var user = firebase.auth().currentUser;
     });
 
     //test
