@@ -56,43 +56,64 @@ module.exports = function(app, dbs) {
         });
     }
 
-
-
-
     app.get('/', function(req, res) {
-
         res.render('../views/index', { title: 'Otter' });
-
-
-    })
+    });
 
     app.post('/login', function(req, res) {
         var email = req.body.email;
         var password = req.body.password;
-        console.log("User name = " + email + ", password is " + password);
-        const auth = firebase.auth();
-        auth.signInWithEmailAndPassword(email, password).catch(function(error) {
+        console.log("email = " + email + ", password = " + password);
+        
+        firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(function(){
+            //success
+            console.log(firebase.auth().currentUser.uid);
+            res.render("index",{user: "true"});
+            //res.redirect("/");        
+        })
+        .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(error);
-        });
+        })
         var user = firebase.auth().currentUser;
-        console.log(user.email);
+    });
+
+    //test
+    app.post('/loginn', function(req,res){
+        res.redirect("/");
     });
 
     app.post('/signup', function(req, res) {
         var email = req.body.email;
         var password = req.body.password;
-        console.log("User name = " + email + ", password is " + password);
+        console.log("email = " + email + ", password is " + password);
         const auth = firebase.auth();
-        auth.createUserWithEmailAndPassword(email, password).catch(function(error) {
+        auth.createUserWithEmailAndPassword(email, password)
+        .then(function(){
+            res.redirect("/");
+        })
+        .catch(function(error) {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
             console.log(error);
-        });
+        })
+        
     });
+
+    app.get('/logout',function(req,res){
+        firebase.auth().signOut().then(function() {
+            // Sign-out successful
+            console.log("logged out");
+            res.redirect("/");
+          }, function(error) {
+            // An error happened
+            console.log(error); 
+          });
+    })
 
     app.use(function(req, res, next) {
         var user = firebase.auth().currentUser;
