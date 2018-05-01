@@ -1,25 +1,26 @@
 <head>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
-    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    
     <script>
     $(document).ready(function() {
-        var user, pass;
-
-
-
-
-        $("#login").click(function() {
-            email = $("#txtEmail").val();
-            pass = $("#txtPassword").val();
+        var user;
+        $("#loginbtn").on("click",function() {
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPassword").val();
             $.ajax({
                 type: "POST",
                 url: "http://localhost:3000/login",
-                data: ({ email: email, password: pass }),
+                data: { 
+                    email: email, 
+                    password: pass 
+                },
                 success: function(response) {
-                    var message = jQuery.parseJSON(message);
+                    //var response = jQuery.parseJSON(response);
                     $('#login').hide();
-                }
+                },
             })
+            
             // $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
             //     if (data === 'done') {
             //         $(txtEmail).hide();
@@ -28,19 +29,22 @@
             // });
         });
         $("#signup").click(function() {
-            email = $("#txtEmail").val();
-            pass = $("#txtPassword").val();
+            var email = $("#txtEmail").val();
+            var pass = $("#txtPassword").val();
 
             $.post("http://localhost:3000/signup", { email: email, password: pass }, function(data) {
                 if (data === 'done') {
                     alert("login success");
                 }
+                $('#login').hide();
             });
         });
 
 
     });
     </script>
+    
+    
 </head>
 <div id='alert'></div>
 <nav class="white" role="navigation">
@@ -48,8 +52,10 @@
         <a id="logo-container" href="/" class="brand-logo"><img src="images/o.png"></a>
         <ul class="right hide-on-med-and-down">
             <li><a href="/">Home</a></li>
-            <li><a href="">Download</a></li>
-            <li><a href="data">Data</a></li>
+            <li><a href="/data">Data</a></li>
+            {{#if user}}
+            <li><a href="/logout">Logout</a></li>
+            {{/if}}
         </ul>
         <ul id="nav-mobile" class="sidenav">
             <li><a href="#">Navbar Link</a></li>
@@ -63,7 +69,7 @@
         <input id="txtEmail" type="email" name="email" value="" placeholder="Email">
         <label for="password">Password:</label>
         <input id='txtPassword' type="password" name="password" value="" placeholder="Password">
-        <input type="button" id="login" value="Login">
+        <input type="button" id="loginbtn" value="Login">
         <input type="button" id="signup" value="Sign Up">
     </form>
 </div>

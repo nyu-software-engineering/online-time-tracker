@@ -10,6 +10,7 @@
             email = $("#txtEmail").val();
             pass = $("#txtPassword").val();
             $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
+                alert("login success")
                 if (data === 'done') {
                     alert("login success");
                 }
