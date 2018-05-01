@@ -43,6 +43,18 @@
         margin-right: auto;
     }
     </style>
+
+    <style>
+
+        .panel {
+        padding: 0 18px;
+        display: none;
+        background-color: white;
+        overflow: hidden;
+        }
+    </style>
+
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="css/materialize.min.css" media="screen,projection" />
@@ -72,33 +84,52 @@
         <h3 id="logoutText">Welcome, </h3>
         <button class="waves-effect waves-light btn" id="btnLogout" class="btn btn-action"> log out </button>
     </div>
-    <h4>
-        How long do you wish to stay online?
 
-    </h4>
-    <div id="options">
-        <span>
-            <button class="waves-effect waves-light btn" id="cancel"> Cancel</button> &emsp; &emsp; &emsp;
-            <button class="waves-effect waves-light btn" id="resume">Resume</button> &emsp; &emsp; &emsp;
-            <button class="waves-effect waves-light btn" id="pause">Pause</button> &emsp; &emsp; &emsp;
+    <pre> </pre>
+    <pre> </pre>
+
+    <div> 
+        <button class="expander"> <h6>Alarm</h6> </button>
+
+        <div class = "panel">
+
+        <h4>
+          How long do you wish to stay online?
+
+         </h4>
+        <div id="options">
+            <span>
+                <button class="waves-effect waves-light btn" id="cancel"> Cancel</button> &emsp; &emsp; &emsp;
+                <button class="waves-effect waves-light btn" id="resume">Resume</button> &emsp; &emsp; &emsp;
+                <button class="waves-effect waves-light btn" id="pause">Pause</button> &emsp; &emsp; &emsp;
             <button class="waves-effect waves-light btn" id="restart">Restart</button> &emsp; &emsp; &emsp;
         </span>
+        </div>
+        <pre> </pre>
+        <div id="setTimer">
+            <form>
+                Set Time (min):
+                <input id="Time" type='number'>
+                <br>
+                <input type="submit" id="start" value="start">
+            </form>
+        </div>
+        <div id="display">
+            <span>
+              <p> Time left:<p>
+              <p id="timeLeft"></p>
+            </span>
+        </div>
+        </div>
     </div>
+
     <pre> </pre>
-    <div id="setTimer">
-        <form>
-            Set Time (min):
-            <input id="Time" type='number'>
-            <br>
-            <input type="submit" id="start" value="start">
-        </form>
-    </div>
-    <div id="display">
-        <span>
-            <p> Time left:<p>
-            <p id="timeLeft"></p>
-        </span>
-    </div>
+
+
+
+    <button class="expander"> <h6>Time Table and Charts</h6> </button>
+    <div class="panel">
+
     <p>
         <form>
             <p>
@@ -146,6 +177,9 @@
         <div id="chart" style="height: 250px; width:100%;">
         </div>
     </form>
+
+</div>
+
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script src="popup.js"></script>
 </body>
