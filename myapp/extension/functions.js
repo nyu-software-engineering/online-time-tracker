@@ -11,8 +11,6 @@ function switchCurrentTab(url) {
 
         if (url !== activeURL) {
             activeURL = url;
-            // console.log(domains[url]['time']);s
-            // console.log('switched url to:' +url);
         }
 
         startTime = new Date();
@@ -40,7 +38,7 @@ function stopTime(url) {
     }
 function updateTime(url) {
 
-        if (url !== undefined) {
+        if (url !== undefined && url!=="newtab") {
 
             let deltaTime = new Date() - startTime;
             deltaTime = deltaTime / 1000
@@ -51,7 +49,7 @@ function updateTime(url) {
             chrome.storage.local.set({ domains: domains }, function() {
 
             });
-            // console.log(activeURL,domains[url]['time']);
+            console.log(activeURL,domains[url]['time']);
         }
 
 

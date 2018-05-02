@@ -1,35 +1,32 @@
-//Arays that stores all the tracked domains
+
 
 
 console.log('bg loaded');
-
-// sendToDB();
-
-
-//triggers when url is changed on current tab
-
-
-// chrome.storage.set({z})
 
 
 let updatedTab;
 
 chrome.tabs.onUpdated.addListener(
 
+
     (tabId, changeinfo, tab) => {
+        console.log('still recordin');
 
+        if(tab.url!=="newtab" && tab.url!=='undefined'){
 
-        let URL = getHostName(tab.url);
-        if (URL !== activeURL) {
-            window.clearInterval(updatedTab)
-        }
+            let URL = getHostName(tab.url);
+            if (URL !== activeURL) {
+                window.clearInterval(updatedTab)
+            }
 
-        switchCurrentTab(URL);
-        let current = getCurrentTime(activeURL);
-        // console.log(`current time on url :${activeURL} is ${currentTime}`)
-        currentTime = current;
-        if (activeURL !== undefined) {
-            updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 250)
+            switchCurrentTab(URL);
+            let current = getCurrentTime(activeURL);
+            // console.log(`current time on url :${activeURL} is ${currentTime}`)
+            currentTime = current;
+            if (activeURL !== undefined) {
+                updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 250)
+            }
+
         }
 
 
@@ -39,26 +36,29 @@ chrome.tabs.onUpdated.addListener(
 //Triggers when the user goes to a different tab in the same window
 chrome.tabs.onActivated.addListener((tab) => {
 
-
     let id = tab.tabId;
 
     chrome.tabs.get(id, (tab) => {
 
-        let URL = getHostName(tab.url);
-        console.log(activeURL);
+        console.log('still recordin');
+        if(tab.url!=='newtab' && tab.url!=='undefined'){
+            let URL = getHostName(tab.url);
+            console.log(activeURL);
 
-        if (URL !== activeURL) {
+            if (URL !== activeURL) {
 
-            window.clearInterval(updatedTab)
+                window.clearInterval(updatedTab)
+            }
+
+            switchCurrentTab(URL);
+            let current = getCurrentTime(activeURL);
+            // console.log(`current time on url :${activeURL} is ${currentTime}`)
+            currentTime = current;
+            if (activeURL != undefined) {
+                updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 250)
+            }
         }
-
-        switchCurrentTab(URL);
-        let current = getCurrentTime(activeURL);
-        // console.log(`current time on url :${activeURL} is ${currentTime}`)
-        currentTime = current;
-        if (activeURL != undefined) {
-            updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 250)
-        }
+        
     })
 })
 
@@ -70,42 +70,50 @@ chrome.windows.onFocusChanged.addListener(
 
         if (windowId == chrome.windows.WINDOW_ID_NONE) {
 
-            //dont' record anything
-            // console.log('window no longer focused');
-            // console.log('here' + updatedTab);
-            activeURL = undefined;
+            console.log('stop recording');
             window.clearInterval(updatedTab);
 
-        } else {
+        } 
+        else {
             //record active tab on switched window
 
             chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, function(tabs) {
+            console.log('other window recording');
+                
+            if(tabs.length!==0){
+
+                console.log('should switch focus')
                 let URL = getHostName(tabs[0].url);
-
-
                 if (URL !== activeURL) {
-                    window.clearInterval(updatedTab)
+                    window.clearInterval(updatedTab);
+                
                 }
-
                 switchCurrentTab(URL);
                 let current = getCurrentTime(activeURL);
                 // console.log(`current time on url :${activeURL} is ${currentTime}`)
                 currentTime = current;
-                updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 2000)
-            });
+                updatedTab = window.setInterval(function() { updateTime(activeURL, currentTime) }, 250)
 
-        }
+
+                 }
+                 
+                
+
+            })
+            
+         }
     })
+    
+                
 
-
-
-chrome.extension.onConnect.addListener(function(port) {
-    console.log("Connected .....");
-    port.onMessage.addListener(function(msg) {
-        console.log("message recieved" + msg);
-        login(msg, 'blah');
-        port.postMessage("Hi Popup.js");
+chrome.windows.onFocusChanged.addListener(function() {
+    console.log("Focus changed.");
+    chrome.windows.getCurrent(function(chromeWindow) {
+        // "normal", "minimized", "maximized" or "fullscreen"
+        if(chromeWindow.state === 'minimized'){
+            console.log('minimized window');
+            window.clearInterval(updatedTab);
+        };
     });
-})
-
-
+    
+});
