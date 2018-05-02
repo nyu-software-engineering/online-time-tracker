@@ -11,7 +11,7 @@ let interval;
 let setDate;
 let pauseDate;
 let alarmDate;
-let x=3;
+
 console.log('hi from timerfunctions');
 
 console.log('timer functions');
@@ -41,9 +41,6 @@ function timeLeft(timeMilli){
 	alarmDate.setMilliseconds(alarmDate.getMilliseconds() + time['milliseconds']);
 	setDate = new Date();
 	timeout = setTimeout(ring, alarmDate - setDate);
-	setInterval(function() {
-		chrome.browserAction.setBadgeText({text: getTimeLeftString()});
-	}, 1000);
 	console.log(alarmDate);
 
 	
@@ -125,11 +122,8 @@ function turnOff()
 	alarmDate = null;
    	pauseDate = null;
    	setDate = null;
-   	chrome.storage.sync.remove(['alarmDate','pauseDate'],function(){
-
-   		console.log('deleted');
-   	})
-   	chrome.browserAction.setBadgeText({text: ""});
+   	chrome.storage.sync.clear();
+   
 }
 
 function error()
