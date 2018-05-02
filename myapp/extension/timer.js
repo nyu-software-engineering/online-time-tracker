@@ -1,5 +1,4 @@
 let bgpage = chrome.extension.getBackgroundPage();
-console.log(bgpage.x);
 
 function show(section){
     document.getElementById(section).style.display = "block";
@@ -94,6 +93,8 @@ function setTimer(event)
 		show('display');
 		disable("resume");
       	enable("pause");
+      	enable('cancel');
+      	enable('restart');
       	show('options');
 		refreshDisplay();
 	}
