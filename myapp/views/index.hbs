@@ -1,32 +1,39 @@
 <head>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    
-    
     <script>
     $(document).ready(function() {
         var user;
-        $("#loginbtn").on("click",function() {
+        $("#loginbtn").on("click", function() {
+
             var email = $("#txtEmail").val();
-            var password = $("#txtPassword").val();
+            var pass = $("#txtPassword").val();
             $.ajax({
                 type: "POST",
                 url: "http://localhost:3000/login",
-                data: { 
-                    email: email, 
-                    password: password 
+                data: {
+                    email: email,
+                    password: pass
                 },
                 success: function(response) {
-                    //var response = jQuery.parseJSON(response);
+                    console.log("success")
                     $('#login').hide();
                 },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                },
             })
-            
-            // $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
-            //     if (data === 'done') {
-            //         $(txtEmail).hide();
-            //         alert("login success");
-            //     }
-            // });
+            console.log(email, pass)
+            $("#login").click(function() {
+                email = $("#txtEmail").val();
+                pass = $("#txtPassword").val();
+
+                $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
+                    console.log("here");
+                    if (data === 'done') {
+                        alert("login success");
+                    }
+                });
+            });
         });
         $("#signup").click(function() {
             var email = $("#txtEmail").val();
@@ -43,8 +50,6 @@
 
     });
     </script>
-    
-    
 </head>
 <div id='alert'></div>
 <nav class="white" role="navigation">
@@ -60,7 +65,6 @@
             <li><a href="/data">Data</a></li>
             <li><a href="/logout">Logout</a></li>
             {{/if}}
-            
         </ul>
         <ul id="nav-mobile" class="sidenav">
             <li><a href="#">Navbar Link</a></li>
@@ -150,7 +154,7 @@
         <div class="row">
             <div class="col s12 center">
                 <div class="row center">
-                <h5 class="header col s12 light">Let Otter take care of you. Log in or register below.</h5>
+                    <h5 class="header col s12 light">Let Otter take care of you. Log in or register below.</h5>
                 </div>
                 <div id="login">
                     <form action="login">
@@ -171,7 +175,6 @@
         <h5 class="light center"></h5>
     </div>
 </footer>
-
 <!--  Scripts-->
 <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 <script src="js/materialize.js"></script>

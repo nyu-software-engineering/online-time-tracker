@@ -22,7 +22,7 @@ var config = {
 firebase.initializeApp(config);
 
 
-
+var userEmail = "";
 function addDomainTimes(entries) {
 
     var totalDomains = {}
@@ -46,7 +46,7 @@ module.exports = function(app, dbs) {
     var rest = [];
 
     function queryCollection(callback) {
-        dbs.production.collection('timeData').find({ "timeData.userEmail": "test@gmail.com" }).toArray((err, result) => {
+        dbs.production.collection('timeData').find({ "timeData.userEmail": userEmail }).toArray((err, result) => {
             if (err) {
                 console.log(err);
             } else if (result.length > 0) {
@@ -70,6 +70,7 @@ module.exports = function(app, dbs) {
             //success
             console.log(firebase.auth().currentUser.uid);
             res.render("index",{user: "true"});
+            userEmail = email;
             //res.redirect("/");        
         })
         .catch(function(error) {
@@ -78,7 +79,7 @@ module.exports = function(app, dbs) {
             var errorMessage = error.message;
             console.log(error);
         })
-        var user = firebase.auth().currentUser;
+        
     });
 
     //test
