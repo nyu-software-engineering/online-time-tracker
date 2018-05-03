@@ -23,17 +23,7 @@
                 },
             })
             console.log(email, pass)
-            $("#login").click(function() {
-                email = $("#txtEmail").val();
-                pass = $("#txtPassword").val();
-
-                $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
-                    console.log("here");
-                    if (data === 'done') {
-                        alert("login success");
-                    }
-                });
-            });
+           
         });
         $("#signup").click(function() {
             var email = $("#txtEmail").val();
@@ -82,7 +72,7 @@
                 <h5 class="header col s12 light">A modern, simple Google Chrome Extension to track your time spent online</h5>
             </div>
             <div class="row center">
-                <a href="#login" id="download-button" class="btn-large waves-effect waves-light black lighten-1">See Extension</a>
+                <a href="/download" id="download-button" class="btn-large waves-effect waves-light black lighten-1">See Extension</a>
             </div>
             <br>
             <br>
