@@ -33,11 +33,15 @@ function addDomainTimes(entries) {
         var domains = entries[i].timeData.domains;
         for (domain in domains) {
             if (totalDomains.hasOwnProperty(domain)) {
-                totalDomains[domain] = totalDomains[domain] + domains[domain].time;;
+                totalDomains[domain] = totalDomains[domain] + domains[domain].time;
             } else {
                 totalDomains[domain] = domains[domain].time;
 
             }
+        }
+
+        for(key in totalDomains){
+            totalDomains[key]=parseFloat(totalDomains[key]).toFixed(2);
         }
     }
     //console.log(totalDomains)
@@ -152,6 +156,13 @@ module.exports = function(app, dbs) {
                 //one day
                 if (rest[i].timeData.time > date.getTime() - 60 * 60 * 24 * 1000) {
                     //console.log(rest[i]);
+
+                    // oneDay.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // oneWeek.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // oneMonth.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // total.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+
+
                     oneDay.push(rest[i])
                     oneWeek.push(rest[i])
                     oneMonth.push(rest[i])
@@ -163,14 +174,24 @@ module.exports = function(app, dbs) {
                     oneWeek.push(rest[i])
                     oneMonth.push(rest[i])
                     total.push(rest[i])
+
+                    // oneWeek.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // oneMonth.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // total.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+
                 }
                 //one month
                 else if (rest[i].timeData.time > date.getTime() - 60 * 60 * 24 * 30 * 1000) {
                     //console.log(rest[i]);
                     oneMonth.push(rest[i])
                     total.push(rest[i])
+                    // oneMonth.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+                    // total.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+
                 } else {
                     total.push(rest[i])
+                    // total.push(parseFloat(Math.round(rest[i] * 100) / 100).toFixed(2));
+
                 }
             }
             // console.log(user.email)
