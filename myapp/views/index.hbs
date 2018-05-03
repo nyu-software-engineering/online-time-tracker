@@ -23,17 +23,7 @@
                 },
             })
             console.log(email, pass)
-            $("#login").click(function() {
-                email = $("#txtEmail").val();
-                pass = $("#txtPassword").val();
-
-                $.post("http://localhost:3000/login", { email: email, password: pass }, function(data) {
-                    console.log("here");
-                    if (data === 'done') {
-                        alert("login success");
-                    }
-                });
-            });
+           
         });
         $("#signup").click(function() {
             var email = $("#txtEmail").val();

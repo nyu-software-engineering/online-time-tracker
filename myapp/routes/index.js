@@ -46,14 +46,24 @@ module.exports = function(app, dbs) {
     var rest = [];
 
     function queryCollection(callback) {
-        dbs.production.collection('timeData').find({ "timeData.userEmail": userEmail }).toArray((err, result) => {
-            if (err) {
-                console.log(err);
-            } else if (result.length > 0) {
-                rest = result;
-                callback();
-            }
-        });
+        console.log("1")
+        console.log(dbs.production.collection('timeData'))
+
+        // if(dbs.production.collection('timeData')){
+            dbs.production.collection('timeData').find({ "timeData.userEmail": userEmail }).toArray((err, result) => {
+                if (err) {
+                    console.log(err);
+                } else if (result.length > 0) {
+                    console.log("2")
+                    rest = result;
+                    callback();
+                }
+            });
+        //}
+        // else{
+        //     console.log("3")
+        // }
+        
     }
 
     app.get('/', function(req, res) {
@@ -71,7 +81,7 @@ module.exports = function(app, dbs) {
             console.log(firebase.auth().currentUser.uid);
             res.render("index",{user: "true"});
             userEmail = email;
-            //res.redirect("/");        
+            res.redirect("/");        
         })
         .catch(function(error) {
             // Handle Errors here.
@@ -94,6 +104,7 @@ module.exports = function(app, dbs) {
         const auth = firebase.auth();
         auth.createUserWithEmailAndPassword(email, password)
         .then(function(){
+            console.log("success")
             res.redirect("/");
         })
         .catch(function(error) {
@@ -140,6 +151,7 @@ module.exports = function(app, dbs) {
 
 
     app.get('/data', function(req, res) {
+        console.log("in data")
         var user = firebase.auth().currentUser;
 
         queryCollection(function() {
